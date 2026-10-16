@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Mi cuenta";
+}
+
+<div class="text-center">
+    <h1 class="display-5">Bienvenido, @ViewBag.Nombre @ViewBag.Apellido</h1>
+    <p>Ya iniciaste sesion en Electrify.</p>
+    <p><strong>Email:</strong> @ViewBag.Email</p>
+    <p><strong>Rol:</strong> @ViewBag.Rol</p>
+    <p><strong>Empresa:</strong> @ViewBag.NombreEmpresa</p>
+    <form asp-controller="Home" asp-action="Logout" method="post">
+        <button type="submit" class="btn btn-outline-danger">Cerrar sesion</button>
+    </form>
+</div>

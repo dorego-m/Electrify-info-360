@@ -1,0 +1,52 @@
+@{
+    ViewData["Title"] = "Crear cuenta";
+    var error = ViewBag.Error as string;
+    var empresas = ViewBag.Empresas as List<Electrify.Models.Empresa> ?? new List<Electrify.Models.Empresa>();
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h1 class="text-center">Crear cuenta</h1>
+        <p class="text-center">Registra tu usuario para acceder a Electrify.</p>
+        <form asp-controller="Home" asp-action="CrearCuenta" method="post" id="formCrearCuenta" novalidate>
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" name="nombre" id="nombre" class="form-control" maxlength="50" required />
+                <small class="text-danger" id="errorNombre"></small>
+            </div>
+            <div class="mb-3">
+                <label for="apellido" class="form-label">Apellido</label>
+                <input type="text" name="apellido" id="apellido" class="form-control" maxlength="50" required />
+                <small class="text-danger" id="errorApellido"></small>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" name="email" id="email" class="form-control" maxlength="100" required />
+                <small class="text-danger" id="errorEmail"></small>
+            </div>
+            <div class="mb-3">
+                <label for="contraseña" class="form-label">Contraseña</label>
+                <input type="password" name="contraseña" id="contraseña" class="form-control" minlength="6" maxlength="100" required />
+                <small class="text-danger" id="errorContraseña"></small>
+            </div>
+            <div class="mb-3">
+                <label for="idEmpresa" class="form-label">Empresa</label>
+                <select name="idEmpresa" id="idEmpresa" class="form-select" required>
+                    <option value="">Selecciona tu empresa</option>
+                    @foreach (var empresa in empresas)
+                    {
+                        <option value="@empresa.IDEmpresa">@empresa.RazonSocial</option>
+                    }
+                </select>
+                <small class="text-danger" id="errorEmpresa"></small>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Crear cuenta</button>
+        </form>
+        @if (!string.IsNullOrEmpty(error))
+        {
+            <p class="text-danger mt-3">@error</p>
+        }
+        <p class="mt-3 text-center">¿Ya tenes cuenta? <a asp-action="Login">Inicia sesion</a></p>
+    </div>
+</div>
+<script src="~/js/validaciones-auth.js" asp-append-version="true"></script>
