@@ -76,5 +76,42 @@ public class BD
     ) ?? "Empresa no encontrada";
 }
 
+public List<PlanSuscripcion> ObtenerPlanes()
+{
+    using var connection = new SqlConnection(_connectionString);
+
+    return connection.Query<PlanSuscripcion>(
+        "sp_PlanSuscripcion_ListarActivos",
+        commandType: CommandType.StoredProcedure
+    ).ToList();
+}
+
+public void RegistrarEmpresa(
+    string razonSocial, string? cuit, string? emailEmpresa,
+    string? telefono, string nombreAdmin, string apellidoAdmin,
+    string emailAdmin, string contrasenaAdmin, int idPlan,
+    string metodoPago)
+{
+    using var connection = new SqlConnection(_connectionString);
+
+    connection.Execute(
+        "sp_Empresa_Registrar",
+        new
+        {
+            RazonSocial = razonSocial,
+            CUIT = cuit,
+            EmailEmpresa = emailEmpresa,
+            Telefono = telefono,
+            NombreAdmin = nombreAdmin,
+            ApellidoAdmin = apellidoAdmin,
+            EmailAdmin = emailAdmin,
+            ContrasenaAdmin = contrasenaAdmin,
+            IDPlan = idPlan,
+            MetodoPago = metodoPago
+        },
+        commandType: CommandType.StoredProcedure
+    );
+}
+
 
 }

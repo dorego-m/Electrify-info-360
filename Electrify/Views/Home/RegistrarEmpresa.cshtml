@@ -1,0 +1,130 @@
+
+@{
+    ViewData["Title"] = "Registrar Empresa";
+    var error = ViewBag.Error as string;
+    var planes = ViewBag.Planes as List<Electrify.Models.PlanSuscripcion> ?? new List<Electrify.Models.PlanSuscripcion>();
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <h1 class="text-center">Registrar Empresa</h1>
+        <p class="text-center">
+            Registrá tu empresa y elegí el plan de Electrify que mejor se adapte a tus necesidades.
+        </p>
+
+        <form asp-controller="Home" asp-action="RegistrarEmpresa"
+              method="post" id="formRegistrarEmpresa" novalidate>
+
+            <h4 class="mt-4">Datos de la empresa</h4>
+
+            <div class="mb-3">
+                <label for="razonSocial" class="form-label">Razón social</label>
+                <input type="text" name="RazonSocial" id="razonSocial"
+                       class="form-control" maxlength="100" required />
+                <small class="text-danger" id="errorRazonSocial"></small>
+            </div>
+
+            <div class="mb-3">
+                <label for="cuit" class="form-label">CUIT</label>
+                <input type="text" name="CUIT" id="cuit"
+                       class="form-control" maxlength="20" />
+                <small class="text-danger" id="errorCUIT"></small>
+            </div>
+
+            <div class="mb-3">
+                <label for="emailEmpresa" class="form-label">Email de contacto</label>
+                <input type="email" name="EmailEmpresa" id="emailEmpresa"
+                       class="form-control" maxlength="100" />
+                <small class="text-danger" id="errorEmailEmpresa"></small>
+            </div>
+
+            <div class="mb-3">
+                <label for="telefono" class="form-label">Número telefónico</label>
+                <input type="text" name="Telefono" id="telefono"
+                       class="form-control" maxlength="30" />
+                <small class="text-danger" id="errorTelefono"></small>
+            </div>
+
+            <hr class="my-4" />
+            <h4>Cuenta administradora</h4>
+
+            <div class="mb-3">
+                <label for="nombreAdmin" class="form-label">Nombre</label>
+                <input type="text" name="NombreAdmin" id="nombreAdmin"
+                       class="form-control" maxlength="50" required />
+                <small class="text-danger" id="errorNombreAdmin"></small>
+            </div>
+
+            <div class="mb-3">
+                <label for="apellidoAdmin" class="form-label">Apellido</label>
+                <input type="text" name="ApellidoAdmin" id="apellidoAdmin"
+                       class="form-control" maxlength="50" required />
+                <small class="text-danger" id="errorApellidoAdmin"></small>
+            </div>
+
+            <div class="mb-3">
+                <label for="emailAdmin" class="form-label">Email de la cuenta</label>
+                <input type="email" name="EmailAdmin" id="emailAdmin"
+                       class="form-control" maxlength="100" required />
+                <small class="text-danger" id="errorEmailAdmin"></small>
+            </div>
+
+            <div class="mb-3">
+                <label for="contrasenaAdmin" class="form-label">Contraseña</label>
+                <input type="password" name="ContrasenaAdmin" id="contrasenaAdmin"
+                       class="form-control" minlength="8" maxlength="100" required />
+                <small class="text-danger" id="errorContrasenaAdmin"></small>
+            </div>
+
+            <hr class="my-4" />
+            <h4>Plan de suscripción</h4>
+
+            <div class="mb-3">
+                <label for="idPlan" class="form-label">Seleccioná un plan</label>
+                <select name="IDPlan" id="idPlan" class="form-select" required>
+                    <option value="">Seleccioná tu plan</option>
+                    @foreach (var plan in planes)
+                    {
+                        <option value="@plan.IDPlan">
+                            @plan.Nombre - $@plan.PrecioMensual / mes
+                        </option>
+                    }
+                </select>
+                <small class="text-danger" id="errorPlan"></small>
+            </div>
+
+            <div class="mb-3">
+                <label for="metodoPago" class="form-label">Método de pago</label>
+                <select name="MetodoPago" id="metodoPago" class="form-select" required>
+                    <option value="Demo">Simulación (sin cobro real)</option>
+                    <option value="Transferencia">Transferencia simulada</option>
+                    <option value="Tarjeta">Tarjeta simulada</option>
+                </select>
+                <small class="text-danger" id="errorMetodoPago"></small>
+            </div>
+
+            <div class="alert alert-info">
+                Este es un prototipo académico. No se realizan cobros reales.
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                Registrar empresa
+            </button>
+        </form>
+
+        @if (!string.IsNullOrEmpty(error))
+        {
+            <div class="alert alert-danger mt-3">
+                @error
+            </div>
+        }
+
+        <p class="mt-3 text-center">
+            ¿Ya tenés una cuenta?
+            <a asp-action="Login">Iniciá sesión</a>
+        </p>
+    </div>
+</div>
+
+<script src="~/js/validaciones-empresa.js"
+        asp-append-version="true"></script>

@@ -92,6 +92,7 @@ public class HomeController : Controller
             return View();
         }
 
+
         // Las cuentas nuevas se registran con el rol Usuario.
         bd.NuevoUsuario(idEmpresa, nombre, apellido, email, contraseña, "Usuario");
 
@@ -109,6 +110,54 @@ public class HomeController : Controller
         return RedirectToAction("Bienvenida");
     }
 
+        [HttpGet]
+        public IActionResult RegistrarEmpresa()
+        {
+            BD bd = new BD();
+            ViewBag.Planes = bd.ObtenerPlanes();
+
+            return View();
+        }
+
+        [HttpPost]
+    public IActionResult RegistrarEmpresa(
+        string RazonSocial, string? CUIT,
+        string? EmailEmpresa, string? Telefono,
+        string NombreAdmin, string ApellidoAdmin,
+        string EmailAdmin, string ContrasenaAdmin,
+        int IDPlan, string MetodoPago)
+    {
+        BD bd = new BD();
+
+        if (string.IsNullOrWhiteSpace(RazonSocial) ||
+            string.IsNullOrWhiteSpace(NombreAdmin) ||
+            string.IsNullOrWhiteSpace(ApellidoAdmin) ||
+            string.IsNullOrWhiteSpace(EmailAdmin) ||
+            string.IsNullOrWhiteSpace(ContrasenaAdmin) ||
+            IDPlan <= 0)
+        {
+            ViewBag.Error = "Completa todos los campos obligatorios.";
+            ViewBag.Planes = bd.ObtenerPlanes();
+            return View();
+        }
+
+        try
+        {
+            bd.RegistrarEmpresa(
+                RazonSocial, CUIT, EmailEmpresa, Telefono,
+                NombreAdmin, ApellidoAdmin, EmailAdmin,
+                ContrasenaAdmin, IDPlan, MetodoPago);
+
+            return RedirectToAction("Login");
+        }
+        catch (Exception)
+        {
+            ViewBag.Error = "No se pudo registrar la empresa. Verifica los datos e intenta nuevamente.";
+            ViewBag.Planes = bd.ObtenerPlanes();
+            return View();
+        }
+    }
+        
     private void CargarEmpresas()
     {
         BD bd = new BD();
