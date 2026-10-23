@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\49961065\\Downloads\\Electrify-info-360\\Electrify\\Electrify.csproj": {}
+    "C:\\Users\\50155748\\Downloads\\Electrify-info-360\\Electrify\\Electrify.csproj": {}
   },
   "projects": {
-    "C:\\Users\\49961065\\Downloads\\Electrify-info-360\\Electrify\\Electrify.csproj": {
+    "C:\\Users\\50155748\\Downloads\\Electrify-info-360\\Electrify\\Electrify.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\49961065\\Downloads\\Electrify-info-360\\Electrify\\Electrify.csproj",
+        "projectUniqueName": "C:\\Users\\50155748\\Downloads\\Electrify-info-360\\Electrify\\Electrify.csproj",
         "projectName": "Electrify",
-        "projectPath": "C:\\Users\\49961065\\Downloads\\Electrify-info-360\\Electrify\\Electrify.csproj",
-        "packagesPath": "C:\\Users\\49961065\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\49961065\\Downloads\\Electrify-info-360\\Electrify\\obj\\",
+        "projectPath": "C:\\Users\\50155748\\Downloads\\Electrify-info-360\\Electrify\\Electrify.csproj",
+        "packagesPath": "C:\\Users\\50155748\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\50155748\\Downloads\\Electrify-info-360\\Electrify\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\49961065\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\50155748\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

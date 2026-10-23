@@ -8,6 +8,7 @@
     <p><strong>Email:</strong> @ViewBag.Email</p>
     <p><strong>Rol:</strong> @ViewBag.Rol</p>
     <p><strong>Empresa:</strong> @ViewBag.NombreEmpresa</p>
+    <a asp-controller="Home" asp-action="Usuario" class="btn btn-primary mb-3">Ir al panel de usuario</a>
     <form asp-controller="Home" asp-action="Logout" method="post">
         <button type="submit" class="btn btn-outline-danger">Cerrar sesion</button>
     </form>

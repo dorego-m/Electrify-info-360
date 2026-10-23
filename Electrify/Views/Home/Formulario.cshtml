@@ -1,0 +1,67 @@
+@model Electrify.Models.FormularioConsumoViewModel
+@using Electrify.Models
+@{
+    ViewData["Title"] = Model.IDRegistro.HasValue ? "Editar carga" : "Subir datos";
+    var sedes = ViewBag.Sedes as List<Sede> ?? new List<Sede>();
+    var sectores = ViewBag.Sectores as List<Sector> ?? new List<Sector>();
+    var dispositivos = ViewBag.Dispositivos as List<Dispositivo> ?? new List<Dispositivo>();
+    var registros = ViewBag.Registros as List<RegistroConsumo> ?? new List<RegistroConsumo>();
+}
+
+@*La IA nos ayudo con el formulario porque se nos re complico*@
+
+<div class="row justify-content-center"><div class="col-lg-10">
+    <h1 class="text-center">@(Model.IDRegistro.HasValue ? "Editar carga de consumo" : "Subir datos de consumo")</h1>
+    <p class="text-center">Seleccioná una sede y agregá los dispositivos que quieras incluir en esta carga.</p>
+    @if (TempData["MensajeConsumo"] != null) { <div class="alert alert-success">@TempData["MensajeConsumo"]</div> }
+    @if (!string.IsNullOrWhiteSpace(ViewBag.Error as string)) { <div class="alert alert-danger">@ViewBag.Error</div> }
+
+    @if (!sedes.Any())
+    {
+        <div class="alert alert-warning">Primero necesitás registrar una sede activa y agregarle sectores y dispositivos desde <a asp-action="Infraestructura">Administrar infraestructura</a>.</div>
+    }
+    else
+    {
+        <form asp-action="Formulario" method="post" id="formConsumo" novalidate>
+            <input type="hidden" asp-for="IDRegistro" />
+            <div class="card mb-4"><div class="card-body">
+                <h4>Datos del período</h4>
+                <div class="mb-3"><label for="IDSede" class="form-label">Sede</label><select asp-for="IDSede" id="IDSede" class="form-select" required><option value="">Seleccioná una sede</option>@foreach (var sede in sedes) { <option value="@sede.IDSede">@sede.Nombre - @sede.Ciudad</option> }</select><small class="text-danger" id="errorSede"></small></div>
+                <div class="row"><div class="col-md-6 mb-3"><label for="FechaInicio" class="form-label">Desde</label><input asp-for="FechaInicio" type="date" id="FechaInicio" class="form-control" required/><small class="text-danger" id="errorFechaInicio"></small></div><div class="col-md-6 mb-3"><label for="FechaFin" class="form-label">Hasta</label><input asp-for="FechaFin" type="date" id="FechaFin" class="form-control" required/><small class="text-danger" id="errorFechaFin"></small></div></div>
+                <div class="mb-3"><label for="TarifaKWh" class="form-label">Tarifa estimada por kWh ($)</label><input asp-for="TarifaKWh" type="number" min="0" step="0.01" id="TarifaKWh" class="form-control" required/><small class="form-text text-muted">Es una tarifa de referencia para el prototipo, no una tarifa oficial.</small></div>
+            </div></div>
+
+            <div class="card mb-4"><div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3"><h4 class="mb-0">Dispositivos de esta carga</h4><button type="button" class="btn btn-outline-primary btn-sm" id="agregarDetalle">+ Agregar dispositivo</button></div>
+                <p class="text-muted">La potencia se toma de la infraestructura actual. Indicá cantidad, horas por día y días utilizados durante el período.</p>
+                <div id="detallesConsumo">
+                @for (int i = 0; i < Model.Detalles.Count; i++)
+                {
+                    <div class="detalle-consumo border rounded p-3 mb-3">
+                        <div class="d-flex justify-content-between"><h6>Dispositivo <span class="numero-detalle">@(i + 1)</span></h6><button type="button" class="btn btn-sm btn-outline-danger quitar-detalle">Quitar</button></div>
+                        <div class="mb-3"><label class="form-label">Sector</label><select class="form-select sector-detalle" required><option value="">Seleccioná sector</option>@foreach (var sector in sectores) { <option value="@sector.IDSector" data-sede="@sector.IDSede" selected="@(Model.Detalles[i].IDDispositivo > 0 && dispositivos.Any(d => d.IDDispositivo == Model.Detalles[i].IDDispositivo && d.IDSector == sector.IDSector))">@sector.NombreSede - @sector.Nombre</option> }</select></div>
+                        <div class="mb-3"><label class="form-label">Dispositivo</label><select name="Detalles[@i].IDDispositivo" class="form-select dispositivo-detalle" required><option value="">Seleccioná dispositivo</option>@foreach (var dispositivo in dispositivos) { <option value="@dispositivo.IDDispositivo" data-sector="@dispositivo.IDSector" data-sede="@dispositivo.IDSede" data-potencia="@(dispositivo.Potencia ?? 0)" data-nombre="@dispositivo.Nombre" selected="@(dispositivo.IDDispositivo == Model.Detalles[i].IDDispositivo)">@dispositivo.Nombre (@dispositivo.Potencia W)</option> }</select></div>
+                        <div class="row"><div class="col-md-4 mb-3"><label class="form-label">Cantidad</label><input name="Detalles[@i].Cantidad" class="form-control cantidad-detalle" type="number" min="1" value="@Model.Detalles[i].Cantidad" required/></div><div class="col-md-4 mb-3"> <label class="form-label">Horas por día</label> <input name="Detalles[@i].HorasPorDia" class="form-control horas-detalle" type="number" min="0.25" max="24" step="0.25" value="@Model.Detalles[i].HorasPorDia.ToString(System.Globalization.CultureInfo.InvariantCulture)" required /> </div><div class="col-md-4 mb-3"><label class="form-label">Días de uso</label><input name="Detalles[@i].DiasUso" class="form-control dias-detalle" type="number" min="1" value="@Model.Detalles[i].DiasUso" required/></div></div>
+                        <div class="small text-muted resumen-detalle">Elegí un dispositivo para calcular el consumo estimado.</div>
+                    </div>
+                }
+                </div>
+                <div class="alert alert-info"><strong>Consumo estimado de la carga:</strong> <span id="totalKWh">0,00</span> kWh · <strong>Costo estimado:</strong> $<span id="totalCosto">0,00</span></div>
+                <button type="submit" class="btn btn-primary w-100">@(Model.IDRegistro.HasValue ? "Guardar cambios" : "Guardar registro de consumo")</button>
+            </div></div>
+        </form>
+    }
+
+    <h3 class="mt-5">Historial de cargas</h3>
+    @if (!registros.Any()) { <p class="text-muted">Todavía no hay cargas guardadas.</p> }
+    else { <div class="table-responsive"><table class="table table-striped"><thead><tr><th>Sede</th><th>Período</th><th>Consumo total</th><th>Costo estimado</th><th>Creado</th><th></th></tr></thead><tbody>@foreach (var registro in registros) { <tr><td>@registro.NombreSede</td><td>@registro.FechaInicio.ToString("dd/MM/yyyy") - @registro.FechaFin.ToString("dd/MM/yyyy")</td><td>@registro.ConsumoTotal.ToString("N2") kWh</td><td>$@registro.CostoEstimado.ToString("N2")</td><td>@registro.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</td><td><a asp-action="EditarFormulario" asp-route-id="@registro.IDRegistro" class="btn btn-sm btn-outline-primary">Editar</a></td></tr> }</tbody></table></div> }
+    <a asp-action="Usuario" class="btn btn-secondary mt-3">Volver al panel</a>
+</div></div>
+
+<script>
+    window.electrifyInfraestructura = {
+        sectores: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(sectores.Select(s => new { id = s.IDSector, sede = s.IDSede, nombre = s.Nombre }))),
+        dispositivos: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(dispositivos.Select(d => new { id = d.IDDispositivo, sector = d.IDSector, sede = d.IDSede, nombre = d.Nombre, potencia = d.Potencia ?? 0 })))
+    };
+</script>
+<script src="~/js/formulario-consumo.js" asp-append-version="true"></script>

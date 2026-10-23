@@ -1,0 +1,63 @@
+@model Electrify.Models.InfraestructuraViewModel
+@using Electrify.Models
+@{
+    ViewData["Title"] = "Infraestructura";
+    var sedes = ViewBag.Sedes as List<Sede> ?? new List<Sede>();
+    var sectores = ViewBag.Sectores as List<Sector> ?? new List<Sector>();
+    var dispositivos = ViewBag.Dispositivos as List<Dispositivo> ?? new List<Dispositivo>();
+}
+
+<div class="row justify-content-center"><div class="col-lg-10">
+    <h1 class="text-center">Administrar infraestructura</h1>
+    <p class="text-center">Agregá nuevas sedes, sectores y dispositivos. Cuando dejen de utilizarse, desactivalos para conservar su historial.</p>
+    @if (TempData["MensajeInfraestructura"] != null) { <div class="alert alert-success">@TempData["MensajeInfraestructura"]</div> }
+    @if (TempData["ErrorInfraestructura"] != null) { <div class="alert alert-danger">@TempData["ErrorInfraestructura"]</div> }
+
+    <div class="card mb-4"><div class="card-body">
+        <h4>Registrar sede</h4>
+        <form asp-action="CrearSede" method="post">
+            <div class="mb-3"><label class="form-label" for="NombreSede">Nombre de la sede</label><input asp-for="NombreSede" id="NombreSede" class="form-control" maxlength="100" required /></div>
+            <div class="mb-3"><label class="form-label" for="DireccionSede">Dirección</label><input asp-for="DireccionSede" id="DireccionSede" class="form-control" maxlength="150" required /></div>
+            <div class="mb-3"><label class="form-label" for="CiudadSede">Ciudad</label><input asp-for="CiudadSede" id="CiudadSede" class="form-control" maxlength="50" required /></div>
+            <button class="btn btn-primary" type="submit">Agregar sede</button>
+        </form>
+    </div></div>
+
+    <div class="card mb-4"><div class="card-body">
+        <h4>Registrar sector</h4>
+        <form asp-action="CrearSector" method="post">
+            <div class="mb-3"><label class="form-label" for="IDSede">Sede</label><select asp-for="IDSede" id="IDSede" class="form-select" required><option value="">Seleccioná una sede activa</option>@foreach (var sede in sedes.Where(x => x.Activo)) { <option value="@sede.IDSede">@sede.Nombre - @sede.Ciudad</option> }</select></div>
+            <div class="mb-3"><label class="form-label" for="NombreSector">Nombre del sector</label><input asp-for="NombreSector" id="NombreSector" class="form-control" maxlength="100" required /></div>
+            <div class="mb-3"><label class="form-label" for="DescripcionSector">Descripción</label><input asp-for="DescripcionSector" id="DescripcionSector" class="form-control" maxlength="300" /></div>
+            <button class="btn btn-primary" type="submit">Agregar sector</button>
+        </form>
+    </div></div>
+
+    <div class="card mb-4"><div class="card-body">
+        <h4>Registrar dispositivo</h4>
+        <form asp-action="CrearDispositivo" method="post">
+            <div class="mb-3"><label class="form-label" for="IDSector">Sector</label><select asp-for="IDSector" id="IDSector" class="form-select" required><option value="">Seleccioná un sector activo</option>@foreach (var sector in sectores.Where(x => x.Activo)) { <option value="@sector.IDSector">@sector.NombreSede - @sector.Nombre</option> }</select></div>
+            <div class="mb-3"><label class="form-label" for="NombreDispositivo">Nombre del dispositivo</label><input asp-for="NombreDispositivo" id="NombreDispositivo" class="form-control" maxlength="100" required /></div>
+            <div class="mb-3"><label class="form-label" for="TipoDispositivo">Tipo</label><input asp-for="TipoDispositivo" id="TipoDispositivo" class="form-control" maxlength="50" placeholder="Computadora, iluminación, aire acondicionado..." required /></div>
+            <div class="mb-3"><label class="form-label" for="PotenciaDispositivo">Potencia (W)</label><input asp-for="PotenciaDispositivo" id="PotenciaDispositivo" class="form-control" type="number" min="0.01" step="0.01" required /></div>
+            <button class="btn btn-primary" type="submit">Agregar dispositivo</button>
+        </form>
+    </div></div>
+
+    <h3 class="mt-4">Infraestructura registrada</h3>
+    <h5 class="mt-3">Sedes</h5>
+    <div class="table-responsive"><table class="table table-striped"><thead><tr><th>Nombre</th><th>Dirección</th><th>Ciudad</th><th>Estado</th><th></th></tr></thead><tbody>
+    @foreach (var sede in sedes) { <tr><td>@sede.Nombre</td><td>@sede.Direccion</td><td>@sede.Ciudad</td><td>@(sede.Activo ? "Activa" : "Inactiva")</td><td><form asp-action="CambiarEstadoInfraestructura" method="post"><input type="hidden" name="tipo" value="Sede"/><input type="hidden" name="id" value="@sede.IDSede"/><input type="hidden" name="activo" value="@(!sede.Activo)"/><button class="btn btn-sm @(sede.Activo ? "btn-outline-danger" : "btn-outline-success")" type="submit">@(sede.Activo ? "Desactivar" : "Reactivar")</button></form></td></tr> }
+    </tbody></table></div>
+
+    <h5 class="mt-4">Sectores</h5>
+    <div class="table-responsive"><table class="table table-striped"><thead><tr><th>Sede</th><th>Sector</th><th>Descripción</th><th>Estado</th><th></th></tr></thead><tbody>
+    @foreach (var sector in sectores) { <tr><td>@sector.NombreSede</td><td>@sector.Nombre</td><td>@sector.Descripcion</td><td>@(sector.Activo ? "Activo" : "Inactivo")</td><td><form asp-action="CambiarEstadoInfraestructura" method="post"><input type="hidden" name="tipo" value="Sector"/><input type="hidden" name="id" value="@sector.IDSector"/><input type="hidden" name="activo" value="@(!sector.Activo)"/><button class="btn btn-sm @(sector.Activo ? "btn-outline-danger" : "btn-outline-success")" type="submit">@(sector.Activo ? "Desactivar" : "Reactivar")</button></form></td></tr> }
+    </tbody></table></div>
+
+    <h5 class="mt-4">Dispositivos</h5>
+    <div class="table-responsive"><table class="table table-striped"><thead><tr><th>Sede</th><th>Sector</th><th>Dispositivo</th><th>Tipo</th><th>Potencia (W)</th><th>Estado</th><th></th></tr></thead><tbody>
+    @foreach (var dispositivo in dispositivos) { <tr><td>@dispositivo.NombreSede</td><td>@dispositivo.NombreSector</td><td>@dispositivo.Nombre</td><td>@dispositivo.Tipo</td><td>@(dispositivo.Potencia?.ToString("N2") ?? "Sin dato")</td><td>@(dispositivo.Activo ? "Activo" : "Inactivo")</td><td><form asp-action="CambiarEstadoInfraestructura" method="post"><input type="hidden" name="tipo" value="Dispositivo"/><input type="hidden" name="id" value="@dispositivo.IDDispositivo"/><input type="hidden" name="activo" value="@(!dispositivo.Activo)"/><button class="btn btn-sm @(dispositivo.Activo ? "btn-outline-danger" : "btn-outline-success")" type="submit">@(dispositivo.Activo ? "Desactivar" : "Reactivar")</button></form></td></tr> }
+    </tbody></table></div>
+    <a asp-action="Usuario" class="btn btn-secondary mt-3">Volver al panel</a>
+</div></div>

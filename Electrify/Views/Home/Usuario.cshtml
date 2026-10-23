@@ -1,0 +1,72 @@
+@{
+    ViewData["Title"] = "Panel de usuario";
+    bool esAdmin = string.Equals(ViewBag.Rol as string, "AdministradorEmpresa", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(ViewBag.Rol as string, "AdminEmpresa", StringComparison.OrdinalIgnoreCase);
+    var registros = ViewBag.UltimosRegistros as List<Electrify.Models.RegistroConsumo> ?? new List<Electrify.Models.RegistroConsumo>();
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <h1 class="text-center">Panel de usuario</h1>
+        <p class="text-center">Bienvenido, @ViewBag.Nombre @ViewBag.Apellido</p>
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h4>@ViewBag.NombreEmpresa</h4>
+                <p class="mb-1"><strong>Rol:</strong> @ViewBag.Rol</p>
+                <p class="mb-0">Desde aquí podés consultar la infraestructura y los registros de consumo de tu empresa.</p>
+            </div>
+        </div>
+
+        @if (esAdmin)
+        {
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5>Subir datos</h5>
+                            <p>Registra consumos de los dispositivos de una sede.</p>
+                            <a asp-action="Formulario" class="btn btn-primary w-100">SUBIR DATOS</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5>Infraestructura</h5>
+                            <p>Administra sedes, sectores y dispositivos de tu empresa.</p>
+                            <a asp-action="Infraestructura" class="btn btn-outline-primary w-100">ADMINISTRAR INFRAESTRUCTURA</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4"><div class="card text-center"><div class="card-body"><h3>@ViewBag.CantidadSedes</h3><p class="mb-0">Sedes activas</p></div></div></div>
+                <div class="col-md-4"><div class="card text-center"><div class="card-body"><h3>@ViewBag.CantidadSectores</h3><p class="mb-0">Sectores activos</p></div></div></div>
+                <div class="col-md-4"><div class="card text-center"><div class="card-body"><h3>@ViewBag.CantidadDispositivos</h3><p class="mb-0">Dispositivos activos</p></div></div></div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info">Tu cuenta puede consultar el panel. Las acciones de administración están disponibles para la cuenta administradora de la empresa.</div>
+        }
+
+        <h4 class="mt-4">Últimos registros de consumo</h4>
+        @if (registros.Count == 0)
+        {
+            <p class="text-muted">Todavía no hay registros de consumo.</p>
+        }
+        else
+        {
+            <div class="table-responsive"><table class="table table-striped align-middle">
+                <thead><tr><th>Sede</th><th>Período</th><th>Consumo (kWh)</th><th>Costo estimado</th></tr></thead>
+                <tbody>
+                @foreach (var registro in registros)
+                {
+                    <tr><td>@registro.NombreSede</td><td>@registro.FechaInicio.ToString("dd/MM/yyyy") - @registro.FechaFin.ToString("dd/MM/yyyy")</td><td>@registro.ConsumoTotal.ToString("N2")</td><td>$@registro.CostoEstimado.ToString("N2")</td></tr>
+                }
+                </tbody>
+            </table></div>
+        }
+        <form asp-action="Logout" method="post" class="mt-4"><button type="submit" class="btn btn-outline-danger">Cerrar sesión</button></form>
+    </div>
+</div>
