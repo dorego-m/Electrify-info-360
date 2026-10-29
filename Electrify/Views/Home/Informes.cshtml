@@ -1,0 +1,193 @@
+
+@{
+    ViewData["Title"] = "Informes";
+}
+
+<div class="informes-page">
+
+    <div class="informes-header">
+        <div>
+            <h1>Informes de Consumo</h1>
+            <p>Consultá tus estadísticas y conocé cómo se utiliza la energía.</p>
+        </div>
+
+        <button class="informe-btn"
+                type="button"
+                onclick="window.print()">
+            Imprimir informe
+        </button>
+    </div>
+
+    <!-- INDICADORES PRINCIPALES -->
+    <div class="informes-resumen">
+
+        <article class="informe-card">
+            <span>Consumo total</span>
+            <h2>1.250 kWh</h2>
+            <p class="dato-azul">Consumo del período</p>
+        </article>
+
+        <article class="informe-card">
+            <span>Costo estimado</span>
+            <h2>$85.000</h2>
+            <p>Importe de ejemplo</p>
+        </article>
+
+        <article class="informe-card">
+            <span>Área de mayor consumo</span>
+            <h2>Climatización</h2>
+            <p class="dato-rojo">60% del consumo</p>
+        </article>
+
+        <article class="informe-card">
+            <span>Objetivo de ahorro</span>
+            <h2>15%</h2>
+            <p class="dato-verde">Meta propuesta</p>
+        </article>
+
+    </div>
+
+    <!-- GRÁFICOS -->
+    <div class="informes-columnas">
+
+        <section class="informe-panel">
+            <h2>Consumo por área</h2>
+            <p class="panel-descripcion">
+                Distribución estimada del consumo eléctrico.
+            </p>
+
+            <div class="informe-barra-fila">
+                <span>Iluminación</span>
+                <div class="informe-barra-fondo">
+                    <div class="informe-barra informe-azul"></div>
+                </div>
+                <strong>25%</strong>
+            </div>
+
+            <div class="informe-barra-fila">
+                <span>Climatización</span>
+                <div class="informe-barra-fondo">
+                    <div class="informe-barra informe-rojo"></div>
+                </div>
+                <strong>60%</strong>
+            </div>
+
+            <div class="informe-barra-fila">
+                <span>Dispositivos</span>
+                <div class="informe-barra-fondo">
+                    <div class="informe-barra informe-verde"></div>
+                </div>
+                <strong>10%</strong>
+            </div>
+
+            <div class="informe-barra-fila">
+                <span>Otros</span>
+                <div class="informe-barra-fondo">
+                    <div class="informe-barra informe-lima"></div>
+                </div>
+                <strong>5%</strong>
+            </div>
+        </section>
+
+        <section class="informe-panel">
+            <h2>Resumen del período</h2>
+            <p class="panel-descripcion">
+                Observaciones y recomendaciones.
+            </p>
+
+            <div class="informe-observacion">
+                <span class="observacion-icono">!</span>
+                <div>
+                    <h3>Consumo elevado</h3>
+                    <p>
+                        La climatización representa la mayor parte
+                        del consumo registrado.
+                    </p>
+                </div>
+            </div>
+
+            <div class="informe-observacion">
+                <span class="observacion-icono verde">✓</span>
+                <div>
+                    <h3>Oportunidad de ahorro</h3>
+                    <p>
+                        Revisá los horarios de uso y la temperatura
+                        del aire acondicionado.
+                    </p>
+                </div>
+            </div>
+
+            <div class="informe-observacion">
+                <span class="observacion-icono azul">i</span>
+                <div>
+                    <h3>Próximo paso</h3>
+                    <p>
+                        Aplicá una estrategia y compará los resultados
+                        en el siguiente informe.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- TABLA DE REGISTROS -->
+    <section class="informe-panel informe-registros">
+
+        <h2>Últimos registros</h2>
+        <p class="panel-descripcion">
+            Ejemplo de registros de consumo por área.
+        </p>
+
+        <div class="tabla-contenedor">
+            <table class="tabla-informes">
+                <thead>
+                    <tr>
+                        <th>Área</th>
+                        <th>Consumo</th>
+                        <th>Porcentaje</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Iluminación</td>
+                        <td>312,5 kWh</td>
+                        <td>25%</td>
+                        <td><span class="estado-normal">Normal</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>Climatización</td>
+                        <td>750 kWh</td>
+                        <td>60%</td>
+                        <td><span class="estado-alerta">Elevado</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>Dispositivos</td>
+                        <td>125 kWh</td>
+                        <td>10%</td>
+                        <td><span class="estado-normal">Normal</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>Otros</td>
+                        <td>62,5 kWh</td>
+                        <td>5%</td>
+                        <td><span class="estado-normal">Normal</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p class="informe-nota">
+            Los valores mostrados son ilustrativos y deben reemplazarse
+            por los datos reales del sistema.
+        </p>
+
+    </section>
+
+</div>

@@ -381,6 +381,12 @@ public IActionResult Bienvenida()
         return View();
     }
 
+    [HttpGet]
+    public IActionResult Informes()
+    {
+        return View();
+    }
+
     public IActionResult Privacy()
     {
         return View();
