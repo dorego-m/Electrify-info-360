@@ -375,6 +375,53 @@ public IActionResult Bienvenida()
         ViewBag.Registros = bd.ObtenerRegistrosConsumo(idEmpresa);
     }
 
+    [HttpGet]
+public IActionResult InformeConsumo(DateTime? fechaInicio, DateTime? fechaFin)
+{
+    int? idEmpresa = HttpContext.Session.GetInt32("IDEmpresa");
+
+    if (idEmpresa == null)
+        return RedirectToAction("Login");
+
+    DateTime inicio = (fechaInicio ?? DateTime.Today.AddDays(-6)).Date;
+    DateTime fin = (fechaFin ?? DateTime.Today).Date;
+
+    if (fin < inicio)
+    {
+        ViewBag.Error = "La fecha final no puede ser anterior a la inicial.";
+        inicio = fin;
+    }
+
+    BD bd = new BD();
+
+    var informe = bd.ObtenerInformeConsumoDiario(
+        idEmpresa.Value, inicio, fin);
+
+    ViewBag.FechaInicio = inicio.ToString("yyyy-MM-dd");
+    ViewBag.FechaFin = fin.ToString("yyyy-MM-dd");
+
+    ViewBag.ConsumoTotal = informe.Sum(x => x.ConsumoKWhEstimado);
+    ViewBag.CostoTotal = informe.Sum(x => x.CostoEstimado);
+    ViewBag.PromedioDiario = informe.Count > 0
+        ? informe.Average(x => x.ConsumoKWhEstimado): 0m;
+
+        
+        var desglose = bd.ObtenerInformeConsumoDesglose(
+            idEmpresa.Value, inicio, fin);
+
+        ViewBag.Sectores = desglose.Sectores;
+        ViewBag.Dispositivos = desglose.Dispositivos;
+
+
+    return View(informe);
+}
+
+       [HttpGet]
+    public IActionResult Estrategias()
+    {
+        return View();
+    }
+
     public IActionResult Privacy()
     {
         return View();

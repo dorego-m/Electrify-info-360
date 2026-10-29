@@ -1,0 +1,262 @@
+
+@model List<Electrify.Models.InformeConsumoDiario>
+@using System.Text.Json
+
+@{
+    ViewData["Title"] = "Informe de consumo";
+
+    var etiquetas = Model.Select(x => x.Fecha.ToString("dd/MM")).ToArray();
+    var consumos = Model.Select(x => x.ConsumoKWhEstimado).ToArray();
+    var costos = Model.Select(x => x.CostoEstimado).ToArray();
+}
+
+<div class="container py-4">
+    <h1 class="mb-2">Informe de consumo</h1>
+    <p class="text-muted">
+        Consumo y costos diarios estimados según los formularios cargados.
+    </p>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-warning">@ViewBag.Error</div>
+    }
+
+    <div class="d-flex flex-wrap gap-2 mb-3">
+    <button type="button" class="btn btn-outline-primary"
+            onclick="seleccionarPeriodo('dia')">
+        Día
+    </button>
+
+    <button type="button" class="btn btn-outline-primary"
+            onclick="seleccionarPeriodo('semana')">
+        Semana
+    </button>
+
+    <button type="button" class="btn btn-outline-primary"
+            onclick="seleccionarPeriodo('mes')">
+        Mes
+    </button>
+
+    <button type="button" class="btn btn-outline-primary"
+            onclick="seleccionarPeriodo('anio')">
+        Año
+    </button>
+</div>
+
+    <form method="get" asp-action="InformeConsumo"
+          class="row g-3 align-items-end mb-4">
+        <div class="col-md-4">
+            <label for="fechaInicio" class="form-label">Desde</label>
+            <input type="date" id="fechaInicio" name="fechaInicio"
+                   value="@ViewBag.FechaInicio"
+                   class="form-control" required />
+        </div>
+
+        <div class="col-md-4">
+            <label for="fechaFin" class="form-label">Hasta</label>
+            <input type="date" id="fechaFin" name="fechaFin"
+                   value="@ViewBag.FechaFin"
+                   class="form-control" required />
+        </div>
+
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary w-100">
+                Generar informe
+            </button>
+        </div>
+    </form>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Consumo estimado</p>
+                    <h3>@(((decimal)ViewBag.ConsumoTotal).ToString("N2")) kWh</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Costo estimado</p>
+                    <h3>$ @(((decimal)ViewBag.CostoTotal).ToString("N2"))</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Promedio diario</p>
+                    <h3>@(((decimal)ViewBag.PromedioDiario).ToString("N2")) kWh</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h2 class="h5 mb-3">Consumo por día</h2>
+            <canvas id="graficoConsumo"></canvas>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="h5 mb-3">Costo estimado por día</h2>
+            <canvas id="graficoCosto"></canvas>
+        </div>
+    </div>
+
+    
+<div class="row g-4 mt-2">
+    <div class="col-lg-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h2 class="h5">Consumo por sector</h2>
+                <canvas id="graficoSectores"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h2 class="h5">Consumo por dispositivo</h2>
+                <canvas id="graficoDispositivos"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <p class="text-muted small mt-3">
+        Los valores diarios son estimaciones distribuidas uniformemente
+        entre los días de cada formulario, no mediciones reales.
+    </p>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const etiquetas = @Html.Raw(JsonSerializer.Serialize(etiquetas));
+    const consumos = @Html.Raw(JsonSerializer.Serialize(consumos));
+    const costos = @Html.Raw(JsonSerializer.Serialize(costos));
+
+    // Gráfico de consumo diario
+    new Chart(document.getElementById('graficoConsumo'), {
+        type: 'bar',
+        data: {
+            labels: etiquetas,
+            datasets: [{
+                label: 'Consumo estimado (kWh)',
+                data: consumos,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    // Gráfico de costo diario
+    new Chart(document.getElementById('graficoCosto'), {
+        type: 'line',
+        data: {
+            labels: etiquetas,
+            datasets: [{
+                label: 'Costo estimado ($)',
+                data: costos,
+                tension: 0.25,
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    // NUEVO: datos de consumo por sector
+    const sectores = @Html.Raw(JsonSerializer.Serialize(
+        ((IEnumerable<Electrify.Models.InformeConsumoCategoria>)ViewBag.Sectores)
+        .Select(x => new { nombre = x.NombreSector, consumo = x.ConsumoKWh })));
+
+    // NUEVO: datos de consumo por dispositivo
+    const dispositivos = @Html.Raw(JsonSerializer.Serialize(
+        ((IEnumerable<Electrify.Models.InformeConsumoCategoria>)ViewBag.Dispositivos)
+        .Select(x => new { nombre = x.NombreDispositivo, consumo = x.ConsumoKWh })));
+
+    console.log("Sectores:", sectores);
+    console.log("Dispositivos:", dispositivos);
+
+    // NUEVO: gráfico circular por sector
+    new Chart(document.getElementById('graficoSectores'), {
+        type: 'doughnut',
+        data: {
+            labels: sectores.map(x => x.nombre),
+            datasets: [{
+                label: 'Consumo estimado (kWh)',
+                data: sectores.map(x => x.consumo)
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+    // NUEVO: gráfico de barras por dispositivo
+    new Chart(document.getElementById('graficoDispositivos'), {
+        type: 'bar',
+        data: {
+            labels: dispositivos.map(x => x.nombre),
+            datasets: [{
+                label: 'Consumo estimado (kWh)',
+                data: dispositivos.map(x => x.consumo)
+            }]
+        },
+        options: {
+            responsive: true,
+            indexAxis: 'y',
+            scales: {
+                x: { beginAtZero: true }
+            }
+        }
+    });
+
+    // Filtros de período
+    function seleccionarPeriodo(periodo) {
+        const hoy = new Date();
+        const inicio = new Date(hoy);
+
+        if (periodo === 'dia') {
+            // Solo el día actual.
+        } else if (periodo === 'semana') {
+            inicio.setDate(hoy.getDate() - 6);
+        } else if (periodo === 'mes') {
+            inicio.setDate(1);
+        } else if (periodo === 'anio') {
+            inicio.setMonth(0, 1);
+        }
+
+        const formatoFecha = fecha => {
+            const anio = fecha.getFullYear();
+            const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+            const dia = String(fecha.getDate()).padStart(2, '0');
+
+            return `${anio}-${mes}-${dia}`;
+        };
+
+        document.getElementById('fechaInicio').value = formatoFecha(inicio);
+        document.getElementById('fechaFin').value = formatoFecha(hoy);
+
+        document.getElementById('fechaInicio').form.requestSubmit();
+    }
+</script>

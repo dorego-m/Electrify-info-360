@@ -249,6 +249,50 @@ public void RegistrarEmpresa(
         }, commandType: CommandType.StoredProcedure);
     }
 
+    public List<InformeConsumoDiario> ObtenerInformeConsumoDiario(
+    int idEmpresa, DateTime fechaInicio, DateTime fechaFin)
+{
+    using var connection = new SqlConnection(_connectionString);
+
+    return connection.Query<InformeConsumoDiario>(
+        "sp_InformeConsumo_Diario",
+        new
+        {
+            IDEmpresa = idEmpresa,
+            FechaInicio = fechaInicio.Date,
+            FechaFin = fechaFin.Date
+        },
+        commandType: CommandType.StoredProcedure
+    ).ToList();
+}
+
+
+public (
+    List<InformeConsumoCategoria> Sectores,
+    List<InformeConsumoCategoria> Dispositivos
+) ObtenerInformeConsumoDesglose(
+    int idEmpresa, DateTime fechaInicio, DateTime fechaFin)
+{
+    using var connection = new SqlConnection(_connectionString);
+
+    using var resultados = connection.QueryMultiple(
+        "sp_InformeConsumo_Desglose",
+        new
+        {
+            IDEmpresa = idEmpresa,
+            FechaInicio = fechaInicio.Date,
+            FechaFin = fechaFin.Date
+        },
+        commandType: CommandType.StoredProcedure
+    );
+
+    var sectores = resultados.Read<InformeConsumoCategoria>().ToList();
+    var dispositivos = resultados.Read<InformeConsumoCategoria>().ToList();
+
+    return (sectores, dispositivos);
+}
+
+
 
 
 

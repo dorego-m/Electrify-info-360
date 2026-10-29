@@ -1,0 +1,141 @@
+
+@{
+    ViewData["Title"] = "Estrategias de Consumo";
+}
+
+<div class="estrategias-page">
+
+    <h1>Estrategias De Consumo</h1>
+
+    <p class="estrategias-intro">
+        Te presentamos nuestras estrategias disponibles; seleccioná la
+        que mejor se adapte a vos:
+    </p>
+
+    <div class="estrategias-grid">
+
+        <!-- COLUMNA IZQUIERDA -->
+        <section class="panel-estrategias">
+
+            <p class="diagnostico">
+                <strong>Diagnóstico:</strong>
+                El aire acondicionado estuvo prendido toda la noche.
+                El consumo estimado fue del 80%.
+                <br />
+                La iluminación fue usada regularmente durante todo el día.
+                El consumo estimado fue del 43%.
+            </p>
+
+            <h2 class="titulo-recomendaciones">
+                Estrategias recomendadas
+            </h2>
+
+            <article class="recomendacion">
+                <h3>❄️ AJUSTE DE CLIMATIZACIÓN:</h3>
+                <p>
+                    Usá mejor el aire acondicionado, evitá temperaturas
+                    extremas para reducir el consumo de energía.
+                </p>
+                <a href="#climatizacion">Ver más →</a>
+            </article>
+
+            <article class="recomendacion">
+                <h3>💡 AJUSTE DE ILUMINACIÓN:</h3>
+                <p>
+                    Usá regularmente la iluminación para reducir
+                    el consumo de energía.
+                </p>
+                <a href="#iluminacion">Ver más →</a>
+            </article>
+
+            <article class="recomendacion">
+                <h3>◉ CONTROLÁ TUS HORARIOS</h3>
+                <p>
+                    Identificá en Electrify en qué momentos consumís
+                    más energía y buscá qué dispositivos lo generan.
+                </p>
+                <a asp-controller="Home" asp-action="Formulario">
+                    Ver consumo →
+                </a>
+            </article>
+
+            <article class="recomendacion">
+                <h3>🔌 AHORRO DE ENERGÍA:</h3>
+                <p>
+                    Desconectá lo que no usás. Algunos dispositivos
+                    siguen consumiendo energía aunque no los estés usando.
+                </p>
+                <a href="#ahorro">Ver más →</a>
+            </article>
+
+        </section>
+
+        <!-- COLUMNA DERECHA -->
+        <section class="panel-grafico">
+
+            <h2>Consumo por área:</h2>
+
+            <div class="aviso-consumo">
+                <strong>⚠ CONSUMO ELEVADO</strong>
+                <span>+18,5 kW</span>
+                <p>Causa: climatización excesiva</p>
+                <p class="ahorro-estimado">
+                    AHORRO DIRECTO: $42.000 ARS/mes
+                </p>
+            </div>
+
+            <div class="grafico-barras">
+
+                <div class="barra-fila">
+                    <span class="barra-label">💡 Iluminación</span>
+                    <div class="barra-contenedor">
+                        <div class="barra iluminacion"></div>
+                    </div>
+                    <strong>25%</strong>
+                </div>
+
+                <div class="barra-fila">
+                    <span class="barra-label">❄ Climatización</span>
+                    <div class="barra-contenedor">
+                        <div class="barra climatizacion"></div>
+                    </div>
+                    <strong>60%</strong>
+                </div>
+
+                <div class="barra-fila">
+                    <span class="barra-label">🔌 Dispositivos</span>
+                    <div class="barra-contenedor">
+                        <div class="barra dispositivos"></div>
+                    </div>
+                    <strong>10%</strong>
+                </div>
+
+                <div class="barra-fila">
+                    <span class="barra-label">Otros</span>
+                    <div class="barra-contenedor">
+                        <div class="barra otros"></div>
+                    </div>
+                    <strong>5%</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <div class="acciones-estrategias">
+        <button type="button"
+                class="btn-simular"
+                onclick="alert('La simulación visual estará disponible próximamente.')">
+            ▣ Simular Ahorro
+        </button>
+
+        <button type="button"
+                class="btn-aplicar"
+                onclick="alert('La aplicación de estrategias estará disponible próximamente.')">
+            ✓ Aplicar Estrategia
+        </button>
+    </div>
+
+</div>
