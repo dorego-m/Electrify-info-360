@@ -35,16 +35,86 @@
                 <div class="d-flex justify-content-between align-items-center mb-3"><h4 class="mb-0">Dispositivos de esta carga</h4><button type="button" class="btn btn-outline-primary btn-sm" id="agregarDetalle">+ Agregar dispositivo</button></div>
                 <p class="text-muted">La potencia se toma de la infraestructura actual. Indicá cantidad, horas por día y días utilizados durante el período.</p>
                 <div id="detallesConsumo">
-                @for (int i = 0; i < Model.Detalles.Count; i++)
+               @for (int i = 0; i < Model.Detalles.Count; i++)
+{
+    <div class="detalle-consumo border rounded p-3 mb-3">
+        <div class="d-flex justify-content-between">
+            <h6>Dispositivo <span class="numero-detalle">@(i + 1)</span></h6>
+            <button type="button" class="btn btn-sm btn-outline-danger quitar-detalle">Quitar</button>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Sector</label>
+            <select class="form-select sector-detalle" required>
+                <option value="">Seleccioná sector</option>
+                @foreach (var sector in sectores)
                 {
-                    <div class="detalle-consumo border rounded p-3 mb-3">
-                        <div class="d-flex justify-content-between"><h6>Dispositivo <span class="numero-detalle">@(i + 1)</span></h6><button type="button" class="btn btn-sm btn-outline-danger quitar-detalle">Quitar</button></div>
-                        <div class="mb-3"><label class="form-label">Sector</label><select class="form-select sector-detalle" required><option value="">Seleccioná sector</option>@foreach (var sector in sectores) { <option value="@sector.IDSector" data-sede="@sector.IDSede" selected="@(Model.Detalles[i].IDDispositivo > 0 && dispositivos.Any(d => d.IDDispositivo == Model.Detalles[i].IDDispositivo && d.IDSector == sector.IDSector))">@sector.NombreSede - @sector.Nombre</option> }</select></div>
-                        <div class="mb-3"><label class="form-label">Dispositivo</label><select name="Detalles[@i].IDDispositivo" class="form-select dispositivo-detalle" required><option value="">Seleccioná dispositivo</option>@foreach (var dispositivo in dispositivos) { <option value="@dispositivo.IDDispositivo" data-sector="@dispositivo.IDSector" data-sede="@dispositivo.IDSede" data-potencia="@(dispositivo.Potencia ?? 0)" data-nombre="@dispositivo.Nombre" selected="@(dispositivo.IDDispositivo == Model.Detalles[i].IDDispositivo)">@dispositivo.Nombre (@dispositivo.Potencia W)</option> }</select></div>
-                        <div class="row"><div class="col-md-4 mb-3"><label class="form-label">Cantidad</label><input name="Detalles[@i].Cantidad" class="form-control cantidad-detalle" type="number" min="1" value="@Model.Detalles[i].Cantidad" required/></div><div class="col-md-4 mb-3"> <label class="form-label">Horas por día</label> <input name="Detalles[@i].HorasPorDia" class="form-control horas-detalle" type="number" min="0" max="24" step="1" value="@Model.Detalles[i].HorasPorDia.ToString(System.Globalization.CultureInfo.InvariantCulture)" required /> </div><div class="col-md-4 mb-3"><label class="form-label">Días de uso</label><input name="Detalles[@i].DiasUso" class="form-control dias-detalle" type="number" min="1" value="@Model.Detalles[i].DiasUso" required/></div></div>
-                        <div class="small text-muted resumen-detalle">Elegí un dispositivo para calcular el consumo estimado.</div>
-                    </div>
+                    <option value="@sector.IDSector"
+                            data-sede="@sector.IDSede"
+                            selected="@(Model.Detalles[i].IDDispositivo > 0 && dispositivos.Any(d => d.IDDispositivo == Model.Detalles[i].IDDispositivo && d.IDSector == sector.IDSector))">
+                        @sector.NombreSede - @sector.Nombre
+                    </option>
                 }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Dispositivo</label>
+            <select name="Detalles[@i].IDDispositivo" class="form-select dispositivo-detalle" required>
+                <option value="">Seleccioná dispositivo</option>
+                @foreach (var dispositivo in dispositivos)
+                {
+                    <option value="@dispositivo.IDDispositivo"
+                            data-sector="@dispositivo.IDSector"
+                            data-sede="@dispositivo.IDSede"
+                            data-potencia="@(dispositivo.Potencia ?? 0)"
+                            data-nombre="@dispositivo.Nombre"
+                            selected="@(dispositivo.IDDispositivo == Model.Detalles[i].IDDispositivo)">
+                        @dispositivo.Nombre (@dispositivo.Potencia W)
+                    </option>
+                }
+            </select>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Cantidad</label>
+                <input name="Detalles[@i].Cantidad"
+                       class="form-control cantidad-detalle"
+                       type="number"
+                       min="1"
+                       value="@Model.Detalles[i].Cantidad"
+                       required />
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Horas por día</label>
+                <input name="Detalles[@i].HorasPorDia"
+                       class="form-control horas-detalle"
+                       type="number"
+                       min="1"
+                       max="24"
+                       step="1"
+                       value="@Model.Detalles[i].HorasPorDia"
+                       required />
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Días de uso</label>
+                <input name="Detalles[@i].DiasUso"
+                       class="form-control dias-detalle"
+                       type="number"
+                       min="1"
+                       value="@Model.Detalles[i].DiasUso"
+                       required />
+            </div>
+        </div>
+
+        <div class="small text-muted resumen-detalle">
+            Elegí un dispositivo para calcular el consumo estimado.
+        </div>
+    </div>
+}
                 </div>
                 <div class="alert alert-info"><strong>Consumo estimado de la carga:</strong> <span id="totalKWh">0,00</span> kWh · <strong>Costo estimado:</strong> $<span id="totalCosto">0,00</span></div>
                 <button type="submit" class="btn btn-primary w-100">@(Model.IDRegistro.HasValue ? "Guardar cambios" : "Guardar registro de consumo")</button>
