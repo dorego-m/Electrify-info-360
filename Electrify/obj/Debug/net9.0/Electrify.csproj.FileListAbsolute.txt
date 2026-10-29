@@ -214,7 +214,6 @@ C:\Users\50155748\Downloads\Electrify-info-360\Electrify\obj\Debug\net9.0\scoped
 C:\Users\50155748\Downloads\Electrify-info-360\Electrify\obj\Debug\net9.0\scopedcss\projectbundle\Electrify.bundle.scp.css
 C:\Users\50155748\Downloads\Electrify-info-360\Electrify\obj\Debug\net9.0\compressed\d45n4njjwj-b9sayid5wm.gz
 C:\Users\50155748\Downloads\Electrify-info-360\Electrify\obj\Debug\net9.0\compressed\kvwu2vwod7-61n19gt1b8.gz
-C:\Users\50155748\Downloads\Electrify-info-360\Electrify\obj\Debug\net9.0\compressed\18tb4yzq2v-pb2cyjya4w.gz
 C:\Users\50155748\Downloads\Electrify-info-360\Electrify\obj\Debug\net9.0\compressed\4bqu90mhhf-xtxxf3hu2r.gz
 C:\Users\50155748\Downloads\Electrify-info-360\Electrify\obj\Debug\net9.0\compressed\ihwyo877h8-go3inkfngt.gz
 C:\Users\50155748\Downloads\Electrify-info-360\Electrify\obj\Debug\net9.0\compressed\a6zd6s6sxj-x4m264ezx6.gz
@@ -289,3 +288,4 @@ C:\Users\50155748\Downloads\Electrify-info-360\Electrify\obj\Debug\net9.0\refint
 C:\Users\50155748\Downloads\Electrify-info-360\Electrify\obj\Debug\net9.0\Electrify.pdb
 C:\Users\50155748\Downloads\Electrify-info-360\Electrify\obj\Debug\net9.0\Electrify.genruntimeconfig.cache
 C:\Users\50155748\Downloads\Electrify-info-360\Electrify\obj\Debug\net9.0\ref\Electrify.dll
+C:\Users\50155748\Downloads\Electrify-info-360\Electrify\obj\Debug\net9.0\compressed\18tb4yzq2v-q3bbmr26ns.gz
