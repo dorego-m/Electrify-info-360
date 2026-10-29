@@ -375,6 +375,12 @@ public IActionResult Bienvenida()
         ViewBag.Registros = bd.ObtenerRegistrosConsumo(idEmpresa);
     }
 
+       [HttpGet]
+    public IActionResult Estrategias()
+    {
+        return View();
+    }
+
     public IActionResult Privacy()
     {
         return View();
