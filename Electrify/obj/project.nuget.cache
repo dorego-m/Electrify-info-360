@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "DR5y/ngiZ0s=",
+  "dgSpecHash": "nLRELUzPllw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\50155748\\Downloads\\Electrify-info-360\\Electrify\\Electrify.csproj",
+  "projectFilePath": "C:\\Users\\50155748\\Downloads\\Nueva carpeta\\Electrify-info-360\\Electrify\\Electrify.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\50155748\\.nuget\\packages\\dapper\\2.1.89\\dapper.2.1.89.nupkg.sha512",
     "C:\\Users\\50155748\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\2.3.11\\microsoft.aspnetcore.cryptography.internal.2.3.11.nupkg.sha512",
