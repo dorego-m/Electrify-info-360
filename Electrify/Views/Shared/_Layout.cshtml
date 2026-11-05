@@ -1,5 +1,9 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@{
+    bool hayUsuario = !string.IsNullOrEmpty(Context.Session.GetString("Email"));
+    bool esInicio = ViewData["Inicio"] != null;
+}
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,61 +15,52 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Electrify</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+        <div class="header-izq">
+            <a class="logo" href='@Url.Action("Index", "Home")'>
+                <img src="~/img/logo.png" alt="Logo de Electrify">
+       
+            </a>
+        </div>
 
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="IA Chat">IA Chat</a>
-                        </li>
-
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="InformeConsumo">Informes</a>
-                        </li>
-
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Estrategias">Estrategias</a>
-                        </li>
-
-
-
-
-
-
-
-
-                    </ul>
-
-                </div>
-            </div>
+        <nav class="header-centro">
+            @if (hayUsuario)
+            {
+                <a class="boton-menu" href='@Url.Action("Index", "Home")'>Home</a>
+                <a class="boton-menu" href='@Url.Action("InformeConsumo", "Home")'>Informes</a>
+                <a class="boton-menu" href='@Url.Action("Estrategias", "Home")'>Estrategias</a>
+            }
         </nav>
+
+        <div class="header-der">
+            @if (hayUsuario)
+            {
+                <a class="link-usuario" href='@Url.Action("Usuario", "Home")'>@Context.Session.GetString("Nombre")</a>
+                <form method="post" action='@Url.Action("Logout", "Home")'>
+                    <button class="boton-salir" type="submit">Cerrar sesión</button>
+                </form>
+            }
+            else
+            {
+                <a class="link-login" href='@Url.Action("Login", "Home")'>Log In</a>
+            }
+        </div>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+    @if (esInicio)
+    {
+        <main class="principal-completo">
             @RenderBody()
         </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
+    }
+    else
+    {
         <div class="container">
-            &copy; 2026 - Electrify - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
         </div>
-    </footer>
+    }
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

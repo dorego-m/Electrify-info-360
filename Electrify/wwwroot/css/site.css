@@ -68,10 +68,158 @@ a:hover {
     background-color: rgba(5, 58, 122, 0.6);
 
 }
-.header{
 
-    background-color: rgba(5, 58, 122, 0.6);
+header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 40px;
+    background-color: #1c2f6b;
+}
+
+.header-izq,
+.header-centro,
+.header-der {
+    display: flex;
+    align-items: center;
+    margin: 5px 15px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    color: #4a9ef0;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.logo img {
+    height: 50px;
+    margin-right: 15px;
+}
+
+.logo:hover {
+    color: #7bb8f5;
+}
+
+.boton-menu {
+    margin: 0 10px;
+    padding: 8px 20px;
+    border-radius: 4px;
+    background-color: #0d4a8a;
+    color: #ffffff;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.boton-menu:hover {
+    background-color: #1560b0;
+    color: #ffffff;
+}
+
+.link-login,
+.link-usuario {
+    color: #ffffff;
+    font-size: 26px;
+    text-decoration: none;
+}
+
+.link-login:hover,
+.link-usuario:hover {
+    color: #5fd4f4;
+}
+
+.boton-salir {
+    margin-left: 20px;
+    padding: 6px 14px;
+    border: 1px solid #ffffff;
+    border-radius: 4px;
+    background-color: transparent;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.boton-salir:hover {
+    background-color: #ffffff;
+    color: #1c2f6b;
 }
 
 
+.principal-completo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh;
+}
 
+.inicio-contenido {
+    text-align: center;
+}
+
+.titulo {
+    margin: 0 0 70px 0;
+    font-size: 48px;
+    font-weight: bold;
+    line-height: 1.25;
+    color: #ffffff;
+}
+
+.titulo-marca {
+    display: block;
+    color: #5fd4f4;
+}
+
+.boton {
+    display: block;
+    width: 240px;            
+    margin: 0 auto 30px auto; 
+    padding: 12px 0;          
+    border-radius: 4px;
+    font-size: 20px;          
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.boton-registro {
+    background-color: #5b9cf5;
+    color: #ffffff;
+}
+
+.boton-registro:hover {
+    background-color: #7bb0f8;
+    color: #ffffff;
+}
+
+.boton-login {
+    background-color: #d0d0d0;
+    color: #000000;
+}
+
+.boton-login:hover {
+    background-color: #e6e6e6;
+    color: #000000;
+}
+
+@media (min-width: 768px) {
+    header {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .header-izq {
+        justify-content: flex-start;
+    }
+
+    .header-centro {
+        justify-content: center;
+    }
+
+    .header-der {
+        justify-content: flex-end;
+    }
+
+    .titulo {
+        font-size: 80px;
+    }
+}
