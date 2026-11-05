@@ -46,6 +46,7 @@ public class HomeController : Controller
         }
 
         HttpContext.Session.SetInt32("IDUsuario", usuario.IDUsuario);
+        HttpContext.Session.SetInt32("IDRol", usuario.IDRol);
         HttpContext.Session.SetInt32("IDEmpresa", usuario.IDEmpresa);
         HttpContext.Session.SetString("Nombre", usuario.Nombre);
         HttpContext.Session.SetString("Apellido", usuario.Apellido);
@@ -93,14 +94,15 @@ public class HomeController : Controller
         }
 
 
-        // Las cuentas nuevas se registran con el rol Usuario.
-        bd.NuevoUsuario(idEmpresa, nombre, apellido, email, contraseña, "Usuario");
+        // Las cuentas nuevas se registran con el rol empleado.
+        bd.NuevoUsuario(idEmpresa, nombre, apellido, email, contraseña, "empleado");
 
         Usuario? usuario = bd.ValidarUsuario(email, contraseña);
         if (usuario != null)
         {
             HttpContext.Session.SetInt32("IDUsuario", usuario.IDUsuario);
             HttpContext.Session.SetInt32("IDEmpresa", usuario.IDEmpresa);
+            HttpContext.Session.SetInt32("IDRol", usuario.IDRol);
             HttpContext.Session.SetString("Nombre", usuario.Nombre);
             HttpContext.Session.SetString("Apellido", usuario.Apellido);
             HttpContext.Session.SetString("Email", usuario.Email);
