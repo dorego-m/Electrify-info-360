@@ -349,14 +349,62 @@ public IActionResult Bienvenida()
         int idUsuario = HttpContext.Session.GetInt32("IDUsuario")!.Value;
 
         model.Detalles = model.Detalles?.Where(d => d.IDDispositivo > 0).ToList() ?? new List<DetalleConsumoInput>();
-        if (model.IDSede <= 0 || model.FechaInicio.Date > model.FechaFin.Date || model.TarifaKWh < 0 || model.Detalles.Count == 0 ||
-            model.Detalles.Any(d => d.Cantidad < 1 || d.HorasPorDia <= 0 || d.HorasPorDia > 24 || d.DiasUso < 1 || d.DiasUso > (model.FechaFin.Date - model.FechaInicio.Date).Days + 1))
-        {
-            ViewBag.Error = "Revisa la sede, el período, la tarifa y los datos de cada dispositivo.";
-            if (model.Detalles.Count == 0) model.Detalles.Add(new DetalleConsumoInput());
-            CargarDatosFormulario();
-            return View(model);
-        }
+       
+if (model.IDSede <= 0)
+{
+    ViewBag.Error = "Debes seleccionar una sede.";
+    CargarDatosFormulario();
+    return View(model);
+}
+
+if (model.FechaInicio.Date > model.FechaFin.Date)
+{
+    ViewBag.Error = "La fecha de inicio no puede ser posterior a la fecha de fin.";
+    CargarDatosFormulario();
+    return View(model);
+}
+
+if (model.TarifaKWh < 0)
+{
+    ViewBag.Error = "La tarifa no puede ser negativa.";
+    CargarDatosFormulario();
+    return View(model);
+}
+
+if (model.Detalles.Count == 0)
+{
+    ViewBag.Error = "Debes agregar al menos un dispositivo.";
+    model.Detalles.Add(new DetalleConsumoInput());
+    CargarDatosFormulario();
+    return View(model);
+}
+
+int cantidadDias = (model.FechaFin.Date - model.FechaInicio.Date).Days + 1;
+
+foreach (DetalleConsumoInput detalle in model.Detalles)
+{
+    if (detalle.Cantidad < 1)
+    {
+        ViewBag.Error = "La cantidad de dispositivos debe ser mayor a cero.";
+        CargarDatosFormulario();
+        return View(model);
+    }
+
+    if (detalle.HorasPorDia <= 0 || detalle.HorasPorDia > 24)
+    {
+        ViewBag.Error = "Las horas de uso deben estar entre 1 y 24.";
+        CargarDatosFormulario();
+        return View(model);
+    }
+
+    if (detalle.DiasUso < 1 || detalle.DiasUso > cantidadDias)
+    {
+        ViewBag.Error = "Los dias de uso deben estar dentro del periodo seleccionado.";
+        CargarDatosFormulario();
+        return View(model);
+    }
+}
+
 
         try
         {
