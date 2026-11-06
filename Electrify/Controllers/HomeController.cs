@@ -255,21 +255,51 @@ public IActionResult Bienvenida()
         return View(new InfraestructuraViewModel());
     }
 
-    [HttpPost]
-    public IActionResult CrearSede(InfraestructuraViewModel model)
+    
+[HttpPost]
+public IActionResult CrearSede(InfraestructuraViewModel model)
+{
+    var acceso = VerificarAdministrador();
+
+    if (acceso != null)
     {
-        var acceso = VerificarAdministrador();
-        if (acceso != null) return acceso;
-        int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa")!.Value;
-        if (string.IsNullOrWhiteSpace(model.NombreSede) || string.IsNullOrWhiteSpace(model.DireccionSede) || string.IsNullOrWhiteSpace(model.CiudadSede))
-            TempData["ErrorInfraestructura"] = "Completa nombre, direccion y ciudad de la sede.";
-        else
-        {
-            try { new BD().CrearSede(idEmpresa, model.NombreSede.Trim(), model.DireccionSede.Trim(), model.CiudadSede.Trim()); TempData["MensajeInfraestructura"] = "Sede creada correctamente."; }
-            catch { TempData["ErrorInfraestructura"] = "No se pudo crear la sede. Verifica los datos."; }
-        }
+        return acceso;
+    }
+
+    int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa").GetValueOrDefault();
+
+    if (string.IsNullOrWhiteSpace(model.NombreSede))
+    {
+        TempData["ErrorInfraestructura"] = "Debes ingresar el nombre de la sede.";
         return RedirectToAction("Infraestructura");
     }
+
+    if (string.IsNullOrWhiteSpace(model.DireccionSede))
+    {
+        TempData["ErrorInfraestructura"] = "Debes ingresar la direccion de la sede.";
+        return RedirectToAction("Infraestructura");
+    }
+
+    if (string.IsNullOrWhiteSpace(model.CiudadSede))
+    {
+        TempData["ErrorInfraestructura"] = "Debes ingresar la ciudad de la sede.";
+        return RedirectToAction("Infraestructura");
+    }
+
+    BD bd = new BD();
+
+    bd.CrearSede(
+        idEmpresa,
+        model.NombreSede.Trim(),
+        model.DireccionSede.Trim(),
+        model.CiudadSede.Trim()
+    );
+
+    TempData["MensajeInfraestructura"] = "Sede creada correctamente.";
+
+    return RedirectToAction("Infraestructura");
+}
+
 
     [HttpPost]
     public IActionResult CrearSector(InfraestructuraViewModel model)
