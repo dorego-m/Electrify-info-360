@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Electrify")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0b77bf1c83202055d1ff50f2471e8b23c5eace71")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7561b181dfb1ce181ea65a5375e7015440d90b65")]
 [assembly: System.Reflection.AssemblyProductAttribute("Electrify")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Electrify")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
