@@ -652,7 +652,6 @@ C:\Users\49961065\Downloads\Nueva carpeta\Electrify-info-360\Electrify\obj\Debug
 C:\Users\49961065\Downloads\Nueva carpeta\Electrify-info-360\Electrify\obj\Debug\net9.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\49961065\Downloads\Nueva carpeta\Electrify-info-360\Electrify\obj\Debug\net9.0\scopedcss\bundle\Electrify.styles.css
 C:\Users\49961065\Downloads\Nueva carpeta\Electrify-info-360\Electrify\obj\Debug\net9.0\scopedcss\projectbundle\Electrify.bundle.scp.css
-C:\Users\49961065\Downloads\Nueva carpeta\Electrify-info-360\Electrify\obj\Debug\net9.0\compressed\d45n4njjwj-eyuai84eke.gz
 C:\Users\49961065\Downloads\Nueva carpeta\Electrify-info-360\Electrify\obj\Debug\net9.0\compressed\kvwu2vwod7-61n19gt1b8.gz
 C:\Users\49961065\Downloads\Nueva carpeta\Electrify-info-360\Electrify\obj\Debug\net9.0\compressed\18tb4yzq2v-q3bbmr26ns.gz
 C:\Users\49961065\Downloads\Nueva carpeta\Electrify-info-360\Electrify\obj\Debug\net9.0\compressed\4bqu90mhhf-xtxxf3hu2r.gz
@@ -729,3 +728,4 @@ C:\Users\49961065\Downloads\Nueva carpeta\Electrify-info-360\Electrify\obj\Debug
 C:\Users\49961065\Downloads\Nueva carpeta\Electrify-info-360\Electrify\obj\Debug\net9.0\Electrify.pdb
 C:\Users\49961065\Downloads\Nueva carpeta\Electrify-info-360\Electrify\obj\Debug\net9.0\Electrify.genruntimeconfig.cache
 C:\Users\49961065\Downloads\Nueva carpeta\Electrify-info-360\Electrify\obj\Debug\net9.0\ref\Electrify.dll
+C:\Users\49961065\Downloads\Nueva carpeta\Electrify-info-360\Electrify\obj\Debug\net9.0\compressed\d45n4njjwj-09ew139p92.gz
