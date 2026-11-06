@@ -209,10 +209,28 @@ public IActionResult Bienvenida()
             return RedirectToAction("Usuario");
         return null;
     }
+    
+    private IActionResult VerificarSesion()
+    {
+         if (HttpContext.Session.GetInt32("IDUsuario") == null ||
+        HttpContext.Session.GetInt32("IDEmpresa") == null)
+    {
+        return RedirectToAction("Login");
+    }
+
+    return null;
+}
+
 
     [HttpGet]
     public IActionResult Usuario()
     {
+        IActionResult acceso = VerificarSesion();
+
+        if (acceso != null)
+        {
+            return acceso;
+        }       
         if (HttpContext.Session.GetInt32("IDUsuario") == null)
             return RedirectToAction("Login");
         int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa")!.Value;
@@ -418,11 +436,18 @@ public IActionResult InformeConsumo(DateTime? fechaInicio, DateTime? fechaFin)
     return View(informe);
 }
 
-       [HttpGet]
-    public IActionResult Estrategias()
-    {
-        return View();
-    }
+   
+        [HttpGet]
+        public IActionResult Estrategias()
+        {
+              IActionResult acceso = VerificarSesion();
+
+            if (acceso != null)  {
+         return acceso;}
+
+    return View();
+}
+
 
     public IActionResult Privacy()
     {
