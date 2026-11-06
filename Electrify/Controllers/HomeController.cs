@@ -301,37 +301,95 @@ public IActionResult CrearSede(InfraestructuraViewModel model)
 }
 
 
-    [HttpPost]
-    public IActionResult CrearSector(InfraestructuraViewModel model)
+[HttpPost]
+public IActionResult CrearSector(InfraestructuraViewModel model)
+{
+    var acceso = VerificarAdministrador();
+
+    if (acceso != null)
     {
-        var acceso = VerificarAdministrador();
-        if (acceso != null) return acceso;
-        int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa")!.Value;
-        if (model.IDSede <= 0 || string.IsNullOrWhiteSpace(model.NombreSector))
-            TempData["ErrorInfraestructura"] = "Selecciona una sede e ingresa el nombre del sector.";
-        else
-        {
-            try { new BD().CrearSector(idEmpresa, model.IDSede, model.NombreSector.Trim(), model.DescripcionSector); TempData["MensajeInfraestructura"] = "Sector creado correctamente."; }
-            catch { TempData["ErrorInfraestructura"] = "No se pudo crear el sector. Verifica que la sede este activa y pertenezca a tu empresa."; }
-        }
+        return acceso;
+    }
+
+    int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa").GetValueOrDefault();
+
+    if (model.IDSede <= 0)
+    {
+        TempData["ErrorInfraestructura"] = "Debes seleccionar una sede.";
         return RedirectToAction("Infraestructura");
     }
 
-    [HttpPost]
-    public IActionResult CrearDispositivo(InfraestructuraViewModel model)
+    if (string.IsNullOrWhiteSpace(model.NombreSector))
     {
-        var acceso = VerificarAdministrador();
-        if (acceso != null) return acceso;
-        int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa")!.Value;
-        if (model.IDSector <= 0 || string.IsNullOrWhiteSpace(model.NombreDispositivo) || string.IsNullOrWhiteSpace(model.TipoDispositivo) || model.PotenciaDispositivo <= 0)
-            TempData["ErrorInfraestructura"] = "Completa el sector, nombre, tipo y una potencia mayor a cero.";
-        else
-        {
-            try { new BD().CrearDispositivo(idEmpresa, model.IDSector, model.NombreDispositivo.Trim(), model.TipoDispositivo.Trim(), model.PotenciaDispositivo); TempData["MensajeInfraestructura"] = "Dispositivo creado correctamente."; }
-            catch { TempData["ErrorInfraestructura"] = "No se pudo crear el dispositivo. Verifica que el sector este activo y pertenezca a tu empresa."; }
-        }
+        TempData["ErrorInfraestructura"] = "Debes ingresar el nombre del sector.";
         return RedirectToAction("Infraestructura");
     }
+
+    BD bd = new BD();
+
+    bd.CrearSector(
+        idEmpresa,
+        model.IDSede,
+        model.NombreSector.Trim(),
+        model.DescripcionSector
+    );
+
+    TempData["MensajeInfraestructura"] = "Sector creado correctamente.";
+
+    return RedirectToAction("Infraestructura");
+}
+
+
+[HttpPost]
+public IActionResult CrearDispositivo(InfraestructuraViewModel model)
+{
+    var acceso = VerificarAdministrador();
+
+    if (acceso != null)
+    {
+        return acceso;
+    }
+
+    int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa").GetValueOrDefault();
+
+    if (model.IDSector <= 0)
+    {
+        TempData["ErrorInfraestructura"] = "Debes seleccionar un sector.";
+        return RedirectToAction("Infraestructura");
+    }
+
+    if (string.IsNullOrWhiteSpace(model.NombreDispositivo))
+    {
+        TempData["ErrorInfraestructura"] = "Debes ingresar el nombre del dispositivo.";
+        return RedirectToAction("Infraestructura");
+    }
+
+    if (string.IsNullOrWhiteSpace(model.TipoDispositivo))
+    {
+        TempData["ErrorInfraestructura"] = "Debes ingresar el tipo de dispositivo.";
+        return RedirectToAction("Infraestructura");
+    }
+
+    if (model.PotenciaDispositivo <= 0)
+    {
+        TempData["ErrorInfraestructura"] = "La potencia debe ser mayor a cero.";
+        return RedirectToAction("Infraestructura");
+    }
+
+    BD bd = new BD();
+
+    bd.CrearDispositivo(
+        idEmpresa,
+        model.IDSector,
+        model.NombreDispositivo.Trim(),
+        model.TipoDispositivo.Trim(),
+        model.PotenciaDispositivo
+    );
+
+    TempData["MensajeInfraestructura"] = "Dispositivo creado correctamente.";
+
+    return RedirectToAction("Infraestructura");
+}
 
     [HttpPost]
     public IActionResult CambiarEstadoInfraestructura(string tipo, int id, bool activo)
