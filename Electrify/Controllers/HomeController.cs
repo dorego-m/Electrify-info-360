@@ -201,14 +201,26 @@ public IActionResult Bienvenida()
                 || string.Equals(HttpContext.Session.GetString("Rol"), "AdminEmpresa", StringComparison.OrdinalIgnoreCase));
     }
 
-    private IActionResult? VerificarAdministrador()
+    
+
+
+     private IActionResult? VerificarAdministrador()
     {
-        if (HttpContext.Session.GetInt32("IDUsuario") == null)
-            return RedirectToAction("Login");
-        if (!EsAdministradorEmpresa())
-            return RedirectToAction("Usuario");
-        return null;
+   
+      if (HttpContext.Session.GetInt32("IDUsuario") == null ||
+        HttpContext.Session.GetInt32("IDEmpresa") == null)
+    {
+        return RedirectToAction("Login");
     }
+
+       if (!EsAdministradorEmpresa())
+    {
+        return RedirectToAction("Usuario");
+    }
+
+    return null;
+    }
+
     
     private IActionResult VerificarSesion()
     {
@@ -231,9 +243,7 @@ public IActionResult Bienvenida()
         {
             return acceso;
         }       
-        if (HttpContext.Session.GetInt32("IDUsuario") == null)
-            return RedirectToAction("Login");
-        int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa")!.Value;
+        int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa").GetValueOrDefault();
         BD bd = new BD();
         ViewBag.Nombre = HttpContext.Session.GetString("Nombre");
         ViewBag.Apellido = HttpContext.Session.GetString("Apellido");
@@ -398,7 +408,9 @@ public IActionResult CrearDispositivo(InfraestructuraViewModel model)
         if (acceso != null) return acceso;
         try
         {
-            new BD().CambiarEstadoInfraestructura(tipo, id, HttpContext.Session.GetInt32("IDEmpresa")!.Value, activo);
+            
+            int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa").GetValueOrDefault();
+            new BD().CambiarEstadoInfraestructura(tipo, id, idEmpresa, activo);
             TempData["MensajeInfraestructura"] = activo ? "Elemento reactivado." : "Elemento desactivado. Se conserva su historial.";
         }
         catch { TempData["ErrorInfraestructura"] = "No se pudo cambiar el estado del elemento."; }
@@ -419,7 +431,7 @@ public IActionResult CrearDispositivo(InfraestructuraViewModel model)
     {
         var acceso = VerificarAdministrador();
         if (acceso != null) return acceso;
-        int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa")!.Value;
+        int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa").GetValueOrDefault();
         var resultado = new BD().ObtenerRegistroConsumo(id, idEmpresa);
         if (resultado.Modelo == null) return NotFound();
         CargarDatosFormulario();
@@ -433,8 +445,8 @@ public IActionResult CrearDispositivo(InfraestructuraViewModel model)
 
         // Esta nos ayudo la IA pq sino se nos re complicaba y lo terminabamos en 10 años 
         if (acceso != null) return acceso;
-        int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa")!.Value;
-        int idUsuario = HttpContext.Session.GetInt32("IDUsuario")!.Value;
+        int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa").GetValueOrDefault();
+        int idUsuario = HttpContext.Session.GetInt32("IDUsuario").GetValueOrDefault(); 
 
         model.Detalles = model.Detalles?.Where(d => d.IDDispositivo > 0).ToList() ?? new List<DetalleConsumoInput>();
        
@@ -512,24 +524,41 @@ foreach (DetalleConsumoInput detalle in model.Detalles)
         }
     }
 
-    private void CargarInfraestructura()
+   
+    rivate void CargarInfraestructura()
     {
-        int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa")!.Value;
-        BD bd = new BD();
-        ViewBag.Sedes = bd.ObtenerSedes(idEmpresa, false);
-        ViewBag.Sectores = bd.ObtenerSectores(idEmpresa, false);
-        ViewBag.Dispositivos = bd.ObtenerDispositivos(idEmpresa, false);
+        if (HttpContext.Session.GetInt32("IDEmpresa") == null)
+     {
+        return;
+      }
+
+    int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa").GetValueOrDefault();
+
+    BD bd = new BD();
+
+    ViewBag.Sedes = bd.ObtenerSedes(idEmpresa, false);
+    ViewBag.Sectores = bd.ObtenerSectores(idEmpresa, false);
+    ViewBag.Dispositivos = bd.ObtenerDispositivos(idEmpresa, false);
+}
+
+
+    
+private void CargarDatosFormulario()
+{
+    if (HttpContext.Session.GetInt32("IDEmpresa") == null)
+    {
+        return;
     }
 
-    private void CargarDatosFormulario()
-    {
-        int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa")!.Value;
-        BD bd = new BD();
-        ViewBag.Sedes = bd.ObtenerSedes(idEmpresa, true);
-        ViewBag.Sectores = bd.ObtenerSectores(idEmpresa, true);
-        ViewBag.Dispositivos = bd.ObtenerDispositivos(idEmpresa, true);
-        ViewBag.Registros = bd.ObtenerRegistrosConsumo(idEmpresa);
-    }
+    int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa").GetValueOrDefault();
+
+    BD bd = new BD();
+
+    ViewBag.Sedes = bd.ObtenerSedes(idEmpresa, true);
+    ViewBag.Sectores = bd.ObtenerSectores(idEmpresa, true);
+    ViewBag.Dispositivos = bd.ObtenerDispositivos(idEmpresa, true);
+    ViewBag.Registros = bd.ObtenerRegistrosConsumo(idEmpresa);
+}
 
     [HttpGet]
 public IActionResult InformeConsumo(DateTime? fechaInicio, DateTime? fechaFin)
