@@ -602,16 +602,85 @@ public IActionResult InformeConsumo(DateTime? fechaInicio, DateTime? fechaFin)
 }
 
    
-        [HttpGet]
-        public IActionResult Estrategias()
-        {
-              IActionResult acceso = VerificarSesion();
+      
+[HttpGet]
+public IActionResult Estrategias()
+{
+    IActionResult acceso = VerificarSesion();
 
-            if (acceso != null)  {
-         return acceso;}
+    if (acceso != null)
+        return acceso;
 
-    return View();
+    int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa")!.Value;
+
+    BD bd = new BD();
+
+    var modelo = bd.ObtenerDatosEstrategias(idEmpresa);
+    modelo.EstrategiasAplicadas = bd.ObtenerEstrategiasAplicadas(idEmpresa);
+
+    return View(modelo);
 }
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+public IActionResult AplicarEstrategia(string tipo)
+{
+    IActionResult acceso = VerificarSesion();
+
+    if (acceso != null)
+        return acceso;
+
+    int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa")!.Value;
+
+    BD bd = new BD();
+
+    switch (tipo)
+    {
+        case "climatizacion":
+            bd.AplicarEstrategia(
+                idEmpresa,
+                "Ajuste de climatización",
+                "Revisar la configuración y los horarios de los equipos de climatización.",
+                "Reducir el consumo asociado a climatización."
+            );
+            break;
+
+        case "iluminacion":
+            bd.AplicarEstrategia(
+                idEmpresa,
+                "Ajuste de iluminación",
+                "Revisar horarios de iluminación y aprovechar la luz natural.",
+                "Optimizar el consumo de iluminación."
+            );
+            break;
+
+        case "horarios":
+            bd.AplicarEstrategia(
+                idEmpresa,
+                "Control de horarios",
+                "Revisar los horarios de funcionamiento de los dispositivos.",
+                "Evitar consumos innecesarios fuera del horario de actividad."
+            );
+            break;
+
+        case "equipos":
+            bd.AplicarEstrategia(
+                idEmpresa,
+                "Ahorro de energía",
+                "Identificar equipos que permanecen encendidos sin necesidad.",
+                "Reducir el consumo innecesario de dispositivos."
+            );
+            break;
+
+        default:
+            return BadRequest();
+    }
+
+    TempData["MensajeEstrategia"] = "La estrategia se registró correctamente.";
+
+    return RedirectToAction("Estrategias");
+}
+
 
 
     public IActionResult Privacy()
