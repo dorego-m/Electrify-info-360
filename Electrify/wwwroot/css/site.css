@@ -222,4 +222,109 @@ header {
     .titulo {
         font-size: 80px;
     }
+
+
+
+}
+
+
+/* ESTRATEGIAS DE CONSUMO */
+
+.estrategias-container {
+    color: #f5f8ff;
+    padding: 20px;
+}
+
+.estrategia-panel {
+    background: #0b203b;
+    border: 1px solid #1765a5;
+    border-radius: 13px;
+    padding: 20px;
+    color: #f5f8ff;
+}
+
+.estrategia-panel h5 {
+    color: #72c4ff;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.estrategia-kpi {
+    background: #0b203b;
+    border: 1px solid #1765a5;
+    border-radius: 12px;
+    padding: 18px;
+    height: 100%;
+}
+
+.estrategia-kpi small {
+    color: #b5c6d9;
+}
+
+.estrategia-kpi h3 {
+    color: #ffffff;
+    font-size: 1.3rem;
+    margin-top: 10px;
+    font-weight: 700;
+}
+
+.oportunidad {
+    background: #17445b;
+    border-radius: 9px;
+    padding: 12px;
+    color: #70e2c0;
+}
+
+.oportunidad p {
+    color: #d5e2ee;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+.recomendacion-item {
+    background: #102c4a;
+    border: 1px solid #244b70;
+    border-radius: 9px;
+    padding: 13px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.recomendacion-item p {
+    color: #b7c9dc;
+    font-size: 0.85rem;
+    margin: 5px 0 0;
+}
+
+.recomendacion-item form {
+    flex-shrink: 0;
+}
+
+.dispositivo-consumo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 5px;
+    border-bottom: 1px solid #24415f;
+    gap: 12px;
+}
+
+.dispositivo-consumo small {
+    display: block;
+    color: #a9bfd5;
+    margin-top: 4px;
+}
+
+.dispositivo-consumo .text-end {
+    flex-shrink: 0;
+}
+
+@media (max-width: 576px) {
+    .recomendacion-item {
+        align-items: flex-start;
+        flex-direction: column;
+    }
 }

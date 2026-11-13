@@ -290,7 +290,113 @@ public (
     var dispositivos = resultados.Read<InformeConsumoCategoria>().ToList();
 
     return (sectores, dispositivos);
+
 }
+
+
+
+
+// Nuevo//
+public EstrategiasViewModel ObtenerDatosEstrategias(int idEmpresa)
+{
+    using var connection = new SqlConnection(_connectionString);
+
+    using var multi = connection.QueryMultiple(
+        "sp_Estrategias_ObtenerDatos",
+        new { IDEmpresa = idEmpresa },
+        commandType: CommandType.StoredProcedure
+    );
+
+    var sectores = multi.Read<ConsumoPorSector>().ToList();
+    var dispositivos = multi.Read<ConsumoPorDispositivo>().ToList();
+
+    decimal total = dispositivos.Sum(x => x.ConsumoKWh);
+
+    foreach (var sector in sectores)
+        sector.Porcentaje = total > 0
+            ? sector.ConsumoKWh * 100 / total : 0;
+
+    foreach (var dispositivo in dispositivos)
+        dispositivo.Porcentaje = total > 0
+            ? dispositivo.ConsumoKWh * 100 / total : 0;
+
+    var modelo = new EstrategiasViewModel
+    {
+        Sectores = sectores,
+        Dispositivos = dispositivos,
+        ConsumoTotal = total,
+        CostoTotal = dispositivos.Count > 0
+            ? connection.QueryFirstOrDefault<decimal>(
+                @"SELECT COALESCE(SUM(c.CostoEstimado), 0)
+                  FROM dbo.RegistroConsumo r
+                  INNER JOIN dbo.Consumo c ON c.IDRegistro = r.IDRegistro
+                  WHERE r.IDEmpresa = @IDEmpresa
+                    AND r.FechaInicio <= CAST(GETDATE() AS DATE)
+                    AND r.FechaFin >= DATEADD(DAY, -29, CAST(GETDATE() AS DATE))",
+                new { IDEmpresa = idEmpresa })
+            : 0
+    };
+
+    var principal = dispositivos.FirstOrDefault();
+
+    if (principal != null)
+    {
+        modelo.DispositivoPrincipal = principal.Nombre;
+        modelo.Diagnostico =
+            $"El dispositivo con mayor consumo estimado es {principal.Nombre}, " +
+            $"con {principal.ConsumoKWh:N2} kWh durante el período analizado.";
+
+        modelo.RecomendacionPrincipal = principal.Tipo.ToLower() switch
+        {
+            var t when t.Contains("aire") || t.Contains("climat") =>
+                "Revisar horarios de funcionamiento y configuración de climatización.",
+            var t when t.Contains("luz") || t.Contains("ilumin") =>
+                "Revisar la iluminación y aprovechar la luz natural.",
+            _ =>
+                "Revisar los horarios de uso y apagar el equipo cuando no sea necesario."
+        };
+    }
+    else
+    {
+        modelo.Diagnostico =
+            "Todavía no hay consumos registrados para realizar un diagnóstico.";
+    }
+
+    return modelo;
+}
+
+public List<Estrategia> ObtenerEstrategiasAplicadas(int idEmpresa)
+{
+    using var connection = new SqlConnection(_connectionString);
+
+    return connection.Query<Estrategia>(
+        "sp_Estrategia_ListarPorEmpresa",
+        new { IDEmpresa = idEmpresa },
+        commandType: CommandType.StoredProcedure
+    ).ToList();
+}
+
+public void AplicarEstrategia(
+    int idEmpresa,
+    string nombre,
+    string descripcion,
+    string objetivo)
+{
+    using var connection = new SqlConnection(_connectionString);
+
+    connection.Execute(
+        "sp_Estrategia_Crear",
+        new
+        {
+            IDEmpresa = idEmpresa,
+            Nombre = nombre,
+            Descripcion = descripcion,
+            Objetivo = objetivo
+        },
+        commandType: CommandType.StoredProcedure
+    );
+}
+
 
 
 
