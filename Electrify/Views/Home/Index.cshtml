@@ -3,12 +3,155 @@
     ViewData["Inicio"] = true;
 }
 
-<div class="inicio-contenido">
-    <h1 class="titulo">
-        Bienvenido a
-        <span class="titulo-marca">electrify</span>
-    </h1>
+<div class="landing">
 
-    <a class="boton boton-registro" href='@Url.Action("RegistrarEmpresa", "Home")'>Registrarte</a>
-    <a class="boton boton-login" href='@Url.Action("Login", "Home")'>Iniciar Sesión</a>
+
+    <section class="landing-hero">
+        <div class="inicio-contenido">
+            <h1 class="titulo">
+                Bienvenido a
+                <span class="titulo-marca">electrify</span>
+            </h1>
+
+            <a class="boton boton-registro" href='@Url.Action("RegistrarEmpresa", "Home")'>Registrarte</a>
+            <a class="boton boton-login" href='@Url.Action("Login", "Home")'>Iniciar Sesión</a>
+
+            <a class="hero-enlace" href="#que-es">Conocé cómo funciona</a>
+        </div>
+    </section>
+
+    <section class="landing-seccion" id="que-es">
+        <div class="landing-contenedor">
+            <div class="que-es-grid">
+                <div class="que-es-texto">
+                    <h2 class="landing-titulo">Transformamos el consumo energético en decisiones inteligentes</h2>
+                    <p class="landing-texto">
+                        Electrify es una plataforma de monitoreo eléctrico diseñada para empresas que buscan
+                        optimizar sus gastos energéticos. A través del seguimiento del consumo, el análisis de
+                        datos y herramientas inteligentes, ayudamos a identificar desperdicios y mejorar la
+                        eficiencia eléctrica.
+                    </p>
+
+                    <ul class="indicadores">
+                        <li class="indicador">
+                            <h3>Monitoreo</h3>
+                            <p>Seguimiento del consumo eléctrico.</p>
+                        </li>
+                        <li class="indicador">
+                            <h3>Análisis</h3>
+                            <p>Estudio de los gastos energéticos.</p>
+                        </li>
+                        <li class="indicador">
+                            <h3>Optimización</h3>
+                            <p>Recomendaciones para ahorrar energía.</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <article class="panel-demo" aria-label="Ejemplo de consumo por sector">
+                    <h3>Consumo por sector</h3>
+                    <p class="panel-demo-nota">Ejemplo ilustrativo</p>
+
+                    <div class="barra-fila">
+                        <span>Climatización</span>
+                        <div class="barra"><div class="barra-relleno barra-1"></div></div>
+                    </div>
+                    <div class="barra-fila">
+                        <span>Producción</span>
+                        <div class="barra"><div class="barra-relleno barra-2"></div></div>
+                    </div>
+                    <div class="barra-fila">
+                        <span>Iluminación</span>
+                        <div class="barra"><div class="barra-relleno barra-3"></div></div>
+                    </div>
+                    <div class="barra-fila">
+                        <span>Oficinas</span>
+                        <div class="barra"><div class="barra-relleno barra-4"></div></div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="landing-seccion landing-seccion-oscura" id="problemas">
+        <div class="landing-contenedor">
+            <h2 class="landing-titulo landing-centrado">¿Qué problemas solucionamos?</h2>
+            <p class="landing-texto landing-centrado">
+                Si alguna de estas situaciones te suena conocida, Electrify te puede ayudar.
+            </p>
+
+            <div class="tarjetas">
+                <article class="tarjeta">
+                    <h3>Gastos eléctricos elevados</h3>
+                    <p>Detectamos sectores y dispositivos con consumos excesivos.</p>
+                </article>
+                <article class="tarjeta">
+                    <h3>Falta de control</h3>
+                    <p>Permitimos conocer cuánto consume cada sector de la empresa.</p>
+                </article>
+                <article class="tarjeta">
+                    <h3>Desperdicio energético</h3>
+                    <p>Identificamos oportunidades para reducir el consumo innecesario.</p>
+                </article>
+                <article class="tarjeta">
+                    <h3>Falta de información</h3>
+                    <p>Ofrecemos informes para tomar mejores decisiones.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="landing-seccion" id="como-funciona">
+        <div class="landing-contenedor">
+            <h2 class="landing-titulo landing-centrado">¿Cómo funciona Electrify?</h2>
+            <p class="landing-texto landing-centrado">
+                En cuatro pasos pasás de no saber cuánto consumís a tener un plan para ahorrar.
+            </p>
+
+            <ol class="pasos">
+                <li class="paso">
+                    <span class="paso-numero">1</span>
+                    <h3>Registrá tu empresa</h3>
+                    <p>Ingresá los datos de tu organización y configurá sus sedes y sectores.</p>
+                </li>
+                <li class="paso">
+                    <span class="paso-numero">2</span>
+                    <h3>Registrá tus dispositivos</h3>
+                    <p>Incorporá los equipos eléctricos y sus datos de consumo.</p>
+                </li>
+                <li class="paso">
+                    <span class="paso-numero">3</span>
+                    <h3>Analizá tu consumo</h3>
+                    <p>Consultá estadísticas, informes y alertas sobre el consumo energético.</p>
+                </li>
+                <li class="paso">
+                    <span class="paso-numero">4</span>
+                    <h3>Optimizá tus gastos</h3>
+                    <p>Aplicá estrategias para mejorar la eficiencia energética de tu empresa.</p>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+
+    <section class="landing-seccion landing-cta">
+        <div class="landing-contenedor landing-centrado">
+            <h2 class="landing-titulo">Empezá a medir lo que hoy no ves</h2>
+            <p class="landing-texto">
+                Registrá tu empresa y cargá tu primer consumo en pocos minutos.
+            </p>
+         
+            <p class="cta-empleado">
+                ¿Tu empresa ya está registrada?
+                <a href='@Url.Action("CrearCuenta", "Home")'>Creá tu cuenta de empleado</a>
+            </p>
+        </div>
+    </section>
+
+
+    <footer class="landing-footer">
+        <p>&copy; 2026 Electrify. Monitoreo de consumo eléctrico para empresas.</p>
+    </footer>
+
 </div>

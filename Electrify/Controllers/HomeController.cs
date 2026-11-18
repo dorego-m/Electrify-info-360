@@ -525,7 +525,7 @@ foreach (DetalleConsumoInput detalle in model.Detalles)
     }
 
    
-    rivate void CargarInfraestructura()
+    private void CargarInfraestructura()
     {
         if (HttpContext.Session.GetInt32("IDEmpresa") == null)
      {
