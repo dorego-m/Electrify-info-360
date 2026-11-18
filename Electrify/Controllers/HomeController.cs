@@ -525,11 +525,7 @@ foreach (DetalleConsumoInput detalle in model.Detalles)
     }
 
    
-<<<<<<< HEAD
    private void CargarInfraestructura()
-=======
-    private void CargarInfraestructura()
->>>>>>> 19a9ce169c5062d0c0c3c662f48a1f0f45760288
     {
         if (HttpContext.Session.GetInt32("IDEmpresa") == null)
      {
