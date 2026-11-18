@@ -525,7 +525,7 @@ foreach (DetalleConsumoInput detalle in model.Detalles)
     }
 
    
-    rivate void CargarInfraestructura()
+   private void CargarInfraestructura()
     {
         if (HttpContext.Session.GetInt32("IDEmpresa") == null)
      {
@@ -611,12 +611,14 @@ public IActionResult Estrategias()
     if (acceso != null)
         return acceso;
 
-    int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa")!.Value;
+    int? idEmpresa = HttpContext.Session.GetInt32("IDEmpresa");
+    if (idEmpresa == null)
+    return RedirectToAction("Login");
 
     BD bd = new BD();
 
-    var modelo = bd.ObtenerDatosEstrategias(idEmpresa);
-    modelo.EstrategiasAplicadas = bd.ObtenerEstrategiasAplicadas(idEmpresa);
+    var modelo = bd.ObtenerDatosEstrategias(idEmpresa.Value);
+    modelo.EstrategiasAplicadas = bd.ObtenerEstrategiasAplicadas(idEmpresa.Value);
 
     return View(modelo);
 }
@@ -630,15 +632,16 @@ public IActionResult AplicarEstrategia(string tipo)
     if (acceso != null)
         return acceso;
 
-    int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa")!.Value;
-
+    int? idEmpresa = HttpContext.Session.GetInt32("IDEmpresa");
+    if (idEmpresa == null)
+      return RedirectToAction("Login");
     BD bd = new BD();
 
     switch (tipo)
     {
         case "climatizacion":
             bd.AplicarEstrategia(
-                idEmpresa,
+                idEmpresa.Value,
                 "Ajuste de climatización",
                 "Revisar la configuración y los horarios de los equipos de climatización.",
                 "Reducir el consumo asociado a climatización."
@@ -647,7 +650,7 @@ public IActionResult AplicarEstrategia(string tipo)
 
         case "iluminacion":
             bd.AplicarEstrategia(
-                idEmpresa,
+                idEmpresa.Value,
                 "Ajuste de iluminación",
                 "Revisar horarios de iluminación y aprovechar la luz natural.",
                 "Optimizar el consumo de iluminación."
@@ -656,7 +659,7 @@ public IActionResult AplicarEstrategia(string tipo)
 
         case "horarios":
             bd.AplicarEstrategia(
-                idEmpresa,
+                idEmpresa.Value,
                 "Control de horarios",
                 "Revisar los horarios de funcionamiento de los dispositivos.",
                 "Evitar consumos innecesarios fuera del horario de actividad."
@@ -665,7 +668,7 @@ public IActionResult AplicarEstrategia(string tipo)
 
         case "equipos":
             bd.AplicarEstrategia(
-                idEmpresa,
+                idEmpresa.Value,
                 "Ahorro de energía",
                 "Identificar equipos que permanecen encendidos sin necesidad.",
                 "Reducir el consumo innecesario de dispositivos."
