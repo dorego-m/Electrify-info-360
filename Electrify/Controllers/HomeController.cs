@@ -131,17 +131,47 @@ public class HomeController : Controller
     {
         BD bd = new BD();
 
-        if (string.IsNullOrWhiteSpace(RazonSocial) ||
-            string.IsNullOrWhiteSpace(NombreAdmin) ||
-            string.IsNullOrWhiteSpace(ApellidoAdmin) ||
-            string.IsNullOrWhiteSpace(EmailAdmin) ||
-            string.IsNullOrWhiteSpace(ContrasenaAdmin) ||
-            IDPlan <= 0)
+        if (string.IsNullOrWhiteSpace(RazonSocial) )
         {
-            ViewBag.Error = "Completa todos los campos obligatorios.";
+            ViewBag.Error = "Ingresa la razón social de la empresa.";
             ViewBag.Planes = bd.ObtenerPlanes();
             return View();
         }
+        if (string.IsNullOrWhiteSpace(NombreAdmin))
+        {
+            ViewBag.Error = "Ingresa el nombre del administrador.";
+            ViewBag.Planes = bd.ObtenerPlanes();
+            return View();
+        }
+        if (string.IsNullOrWhiteSpace(ApellidoAdmin))
+        {
+            viewBag.Error = "Ingresa el apellido del administrador";
+            ViewBag.Planes = bd.ObtenerPlanes();
+            return View();
+        }
+        if (string.IsNullOrWhiteSpace(EmailAdmin))
+        {
+            viewbag.Error = "Ingresa el email del administrador.";
+            ViewBag.Planes = bd.ObtenerPlanes();
+            return View();
+
+        }
+        if (string.IsNullOrWhiteSpace(ContrasenaAdmin))
+        {
+            viewBag.Error = "Ingresa una contraseña.";
+            ViewBag.Planes = bd.ObtenerPlanes();
+            return View();
+
+        }
+        if (IDPlan <= 0)
+        {
+           ViewBag.Error = "Selecciona un plan de suscripción.";
+           ViewBag.Planes = bd.ObtenerPlanes();
+           return View();
+        }
+    
+
+     
 
         try
         {
@@ -443,6 +473,7 @@ public IActionResult CrearDispositivo(InfraestructuraViewModel model)
     {
         var acceso = VerificarAdministrador();
 
+        // Esta nos ayudo la IA pq sino se nos re complicaba y lo terminabamos en 10 años 
         if (acceso != null) return acceso;
         int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa").GetValueOrDefault();
         int idUsuario = HttpContext.Session.GetInt32("IDUsuario").GetValueOrDefault(); 
