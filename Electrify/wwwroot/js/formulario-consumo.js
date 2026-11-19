@@ -10,7 +10,12 @@
     const tarifa = document.getElementById("TarifaKWh");
     const fechaInicio = document.getElementById("FechaInicio");
     const fechaFin = document.getElementById("FechaFin");
-    const data = window.electrifyInfraestructura || { sectores: [], dispositivos: [] };
+    const datosElemento = document.getElementById("datosInfraestructura");
+
+const data = datosElemento ? {
+    sectores: JSON.parse(datosElemento.dataset.sectores),
+    dispositivos: JSON.parse(datosElemento.dataset.dispositivos)
+} : { sectores: [], dispositivos: [] };
 
     function convertirDecimal(valor) {
     return Number(String(valor).replace(",", "."));
@@ -35,12 +40,12 @@
         const selectedSede = Number(sedeSelect.value);
         const old = sectorSelect.value;
         sectorSelect.innerHTML = '<option value="">Seleccioná sector</option>';
-        data.sectores.filter(s => s.sede === selectedSede).forEach(s => {
-            const option = document.createElement("option");
-            option.value = s.id;
-            option.textContent = s.nombre;
-            sectorSelect.appendChild(option);
-        });
+        data.sectores.filter(s => s.IDSede === selectedSede).forEach(s => {
+    const option = document.createElement("option");
+    option.value = s.IDSector;
+    option.textContent = s.Nombre;
+    sectorSelect.appendChild(option);
+});
         if ([...sectorSelect.options].some(o => o.value === old)) sectorSelect.value = old;
         actualizarDispositivos(row);
     }
@@ -50,13 +55,16 @@
         const select = row.querySelector(".dispositivo-detalle");
         const old = select.value;
         select.innerHTML = '<option value="">Seleccioná dispositivo</option>';
-        data.dispositivos.filter(d => d.sector === sectorId && d.sede === Number(sedeSelect.value)).forEach(d => {
-            const option = document.createElement("option");
-            option.value = d.id;
-            option.dataset.potencia = d.potencia;
-            option.textContent = `${d.nombre} (${d.potencia} W)`;
-            select.appendChild(option);
-        });
+        data.dispositivos.filter(d =>
+    d.IDSector === sectorId &&
+    d.IDSede === Number(sedeSelect.value)
+).forEach(d => {
+    const option = document.createElement("option");
+    option.value = d.IDDispositivo;
+    option.dataset.potencia = d.Potencia ?? 0;
+    option.textContent = `${d.Nombre} (${d.Potencia ?? 0} W)`;
+    select.appendChild(option);
+});
         if ([...select.options].some(o => o.value === old)) select.value = old;
         calcular();
     }
@@ -68,7 +76,7 @@
             <div class="d-flex justify-content-between"><h6>Dispositivo <span class="numero-detalle"></span></h6><button type="button" class="btn btn-sm btn-outline-danger quitar-detalle">Quitar</button></div>
             <div class="mb-3"><label class="form-label">Sector</label><select class="form-select sector-detalle" required><option value="">Seleccioná sector</option></select></div>
             <div class="mb-3"><label class="form-label">Dispositivo</label><select class="form-select dispositivo-detalle" required><option value="">Seleccioná dispositivo</option></select></div>
-            <div class="row"><div class="col-md-4 mb-3"><label class="form-label">Cantidad</label><input class="form-control cantidad-detalle" type="number" min="1" value="1" required></div><div class="col-md-4 mb-3"> <label class="form-label">Horas por día</label> <input class="form-control horas-detalle" type="number" min="0.25" max="24" step="0.25" value="8" required> </div><div class="col-md-4 mb-3"><label class="form-label">Días de uso</label><input class="form-control dias-detalle" type="number" min="1" value="1" required></div></div>
+            <div class="row"><div class="col-md-4 mb-3"><label class="form-label">Cantidad</label><input class="form-control cantidad-detalle" type="number" min="1" value="1" required></div><div class="col-md-4 mb-3"> <label class="form-label">Horas por día</label> <input class="form-control horas-detalle" type="number" min="1" max="24" step="1" value="8" required> </div><div class="col-md-4 mb-3"><label class="form-label">Días de uso</label><input class="form-control dias-detalle" type="number" min="1" value="1" required></div></div>
             <div class="small text-muted resumen-detalle">Elegí un dispositivo para calcular el consumo estimado.</div>`;
         container.appendChild(row);
         actualizarIndices();

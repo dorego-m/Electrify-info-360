@@ -267,11 +267,7 @@ public void RegistrarEmpresa(
 }
 
 
-public (
-    List<InformeConsumoCategoria> Sectores,
-    List<InformeConsumoCategoria> Dispositivos
-) ObtenerInformeConsumoDesglose(
-    int idEmpresa, DateTime fechaInicio, DateTime fechaFin)
+public ( List<InformeConsumoCategoria> Sectores, List<InformeConsumoCategoria> Dispositivos) ObtenerInformeConsumoDesglose( int idEmpresa, DateTime fechaInicio, DateTime fechaFin)
 {
     using var connection = new SqlConnection(_connectionString);
 

@@ -443,7 +443,6 @@ public IActionResult CrearDispositivo(InfraestructuraViewModel model)
     {
         var acceso = VerificarAdministrador();
 
-        // Esta nos ayudo la IA pq sino se nos re complicaba y lo terminabamos en 10 años 
         if (acceso != null) return acceso;
         int idEmpresa = HttpContext.Session.GetInt32("IDEmpresa").GetValueOrDefault();
         int idUsuario = HttpContext.Session.GetInt32("IDUsuario").GetValueOrDefault(); 

@@ -128,10 +128,9 @@
     <a asp-action="Usuario" class="btn btn-secondary mt-3">Volver al panel</a>
 </div></div>
 
-<script>
-    window.electrifyInfraestructura = {
-        sectores: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(sectores.Select(s => new { id = s.IDSector, sede = s.IDSede, nombre = s.Nombre }))),
-        dispositivos: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(dispositivos.Select(d => new { id = d.IDDispositivo, sector = d.IDSector, sede = d.IDSede, nombre = d.Nombre, potencia = d.Potencia ?? 0 })))
-    };
-</script>
+<div id="datosInfraestructura"
+     data-sectores="@System.Text.Json.JsonSerializer.Serialize(sectores)"
+     data-dispositivos="@System.Text.Json.JsonSerializer.Serialize(dispositivos)">
+</div>
+
 <script src="~/js/formulario-consumo.js" asp-append-version="true"></script>

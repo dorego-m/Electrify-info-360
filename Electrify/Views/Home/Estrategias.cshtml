@@ -1,6 +1,5 @@
 
 @model Electrify.Models.EstrategiasViewModel
-@using System.Text.Json
 
 @{
     ViewData["Title"] = "Estrategias de Consumo";
@@ -170,40 +169,11 @@
     </div>
 </div>
 
+<div id="datosEstrategias"
+     data-sectores="@System.Text.Json.JsonSerializer.Serialize(Model.Sectores)">
+</div>
+
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-        const sectores = @Html.Raw(JsonSerializer.Serialize(
-            Model.Sectores.Select(x => new {
-                nombre = x.NombreSector,
-                consumo = x.ConsumoKWh
-            })));
-
-        const elemento = document.getElementById('graficoEstrategias');
-
-        if (elemento && sectores.length > 0) {
-            new Chart(elemento, {
-                type: 'bar',
-                data: {
-                    labels: sectores.map(x => x.nombre),
-                    datasets: [{
-                        label: 'Consumo estimado (kWh)',
-                        data: sectores.map(x => x.consumo),
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        x: { beginAtZero: true }
-                    }
-                }
-            });
-        }
-    </script>
+    <script src="~/js/estrategias.js" asp-append-version="true"></script>
 }
