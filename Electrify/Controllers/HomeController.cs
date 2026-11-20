@@ -145,20 +145,20 @@ public class HomeController : Controller
         }
         if (string.IsNullOrWhiteSpace(ApellidoAdmin))
         {
-            viewBag.Error = "Ingresa el apellido del administrador";
+            ViewBag.Error = "Ingresa el apellido del administrador";
             ViewBag.Planes = bd.ObtenerPlanes();
             return View();
         }
         if (string.IsNullOrWhiteSpace(EmailAdmin))
         {
-            viewbag.Error = "Ingresa el email del administrador.";
+            ViewBag.Error = "Ingresa el email del administrador.";
             ViewBag.Planes = bd.ObtenerPlanes();
             return View();
 
         }
         if (string.IsNullOrWhiteSpace(ContrasenaAdmin))
         {
-            viewBag.Error = "Ingresa una contraseña.";
+            ViewBag.Error = "Ingresa una contraseña.";
             ViewBag.Planes = bd.ObtenerPlanes();
             return View();
 
