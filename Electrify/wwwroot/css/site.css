@@ -405,7 +405,7 @@ header {
     color: #cfe6f2;
 }
 
-.landing-texto.landing-centrado {
+.landing-texto .landing-centrado {
     margin-left: auto;
     margin-right: auto;
 }
