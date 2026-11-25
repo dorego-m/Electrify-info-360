@@ -2,87 +2,155 @@
     ViewData["Title"] = "Consejos";
 }
 
-<div class="pagina-consejos">
+<div class="guia-consejos">
 
-    <section class="encabezado-consejos">
-        <span>GESTIÓN ENERGÉTICA</span>
+    <div class="guia-encabezado">
+        <h1>Guía de eficiencia energética</h1>
+        <p>Recomendaciones prácticas para mejorar el consumo de tu empresa.</p>
+    </div>
 
-        <h1>Cada cambio cuenta.</h1>
+    <div class="guia-contenido">
 
-        <p>Incorporá mejores hábitos y optimizá el consumo energético de tu empresa.</p>
-    </section>
+        <aside class="guia-menu">
 
-    <section class="consejo-destacado">
+            <h3>Categorías</h3>
 
-        <span>CONSEJO DESTACADO</span>
+            <a href="#iluminacion">Iluminación</a>
+            <a href="#climatizacion">Climatización</a>
+            <a href="#equipos">Equipamiento</a>
+            <a href="#horarios">Horarios</a>
+            <a href="#mantenimiento">Mantenimiento</a>
+            <a href="#monitoreo">Monitoreo</a>
 
-        <h2>Identificá el consumo fuera del horario laboral</h2>
+            <hr>
 
-        <p>Revisá qué dispositivos permanecen encendidos cuando tu empresa no está operando. Esto te permitirá detectar consumos innecesarios.</p>
-
-        <a class="boton-consejo"
-           href='@Url.Action("InformeConsumo", "Home")'>
-            Ver mis informes
-        </a>
-
-    </section>
-
-    <h2 class="titulo-recomendaciones">
-        Recomendaciones para tu empresa
-    </h2>
-
-    <div class="contenedor-consejos">
-
-        <div class="tarjeta-consejo">
-            <span>01 / ILUMINACIÓN</span>
-            <h3>Aprovechá la luz natural</h3>
-            <p>Reducí el uso de iluminación artificial durante las horas de mayor luz solar.</p>
-        </div>
-
-        <div class="tarjeta-consejo">
-            <span>02 / CLIMATIZACIÓN</span>
-            <h3>Optimizá la temperatura</h3>
-            <p>Mantené una temperatura confortable y realizá un mantenimiento periódico de los equipos.</p>
-        </div>
-
-        <div class="tarjeta-consejo">
-            <span>03 / EQUIPOS</span>
-            <h3>Evitá consumos innecesarios</h3>
-            <p>Apagá los dispositivos que no necesiten permanecer encendidos al finalizar la jornada.</p>
-        </div>
-
-        <div class="tarjeta-consejo">
-            <span>04 / HORARIOS</span>
-            <h3>Organizá el consumo</h3>
-            <p>Planificá el funcionamiento de los equipos según los horarios de actividad de tu empresa.</p>
-        </div>
-
-        <div class="tarjeta-consejo">
-            <span>05 / MANTENIMIENTO</span>
-            <h3>Cuidá tus instalaciones</h3>
-            <p>Realizá revisiones periódicas con personal capacitado para mantener la eficiencia de los equipos.</p>
-        </div>
-
-        <div class="tarjeta-consejo">
-            <span>06 / MONITOREO</span>
             <h3>Conocé tus consumos</h3>
-            <p>Consultá los informes energéticos para identificar los sectores que más energía utilizan.</p>
+
+            <p>Identificá oportunidades de ahorro en tu empresa.</p>
+
+            <a class="guia-boton"
+               href='@Url.Action("InformeConsumo", "Home")'>
+                Ver informes
+            </a>
+
+        </aside>
+
+        <div class="guia-articulos">
+
+            <article class="guia-articulo" id="iluminacion">
+                    <img class="guia-imagen"
+            src="~/img/iluminacion.jpg"
+            alt="Iluminación natural">
+
+                <span>ILUMINACIÓN</span>
+
+                <h2>Aprovechá la iluminación natural</h2>
+
+                <p>Reducí el uso de iluminación artificial durante las horas de mayor luz solar.</p>
+
+                <h3>¿Cómo implementarlo?</h3>
+
+                <ul>
+                    <li>Ubicá los puestos de trabajo cerca de las ventanas.</li>
+                    <li>Apagá las luces de los espacios desocupados.</li>
+                    <li>Evaluá el reemplazo de luminarias por LED.</li>
+                </ul>
+
+            </article>
+
+            <article class="guia-articulo" id="climatizacion">
+            <img class="guia-imagen" src="~/img/climatizacion.jpg" alt="Climatización">
+
+                <span>CLIMATIZACIÓN</span>
+
+                <h2>Optimizá la temperatura</h2>
+
+                <p>Mejorá la eficiencia de los equipos sin afectar el confort de los trabajadores.</p>
+
+                <h3>¿Cómo implementarlo?</h3>
+
+                <ul>
+                    <li>Evitá climatizar espacios desocupados.</li>
+                    <li>Mantené puertas y ventanas cerradas cuando corresponda.</li>
+                    <li>Programá revisiones periódicas de los equipos.</li>
+                </ul>
+
+            </article>
+
+            <article class="guia-articulo" id="equipos">
+            <img class="guia-imagen" src="~/img/equipamiento.jpg" alt="Equipamiento">
+
+                <span>EQUIPAMIENTO</span>
+
+                <h2>Reducí el consumo innecesario</h2>
+
+                <p>Identificá los dispositivos que consumen energía sin estar siendo utilizados.</p>
+
+                <h3>¿Cómo implementarlo?</h3>
+
+                <ul>
+                    <li>Apagá los equipos que no necesiten funcionar.</li>
+                    <li>Activá los modos de ahorro energético.</li>
+                    <li>Evaluá la eficiencia de los nuevos dispositivos.</li>
+                </ul>
+
+            </article>
+
+            <article class="guia-articulo" id="horarios">
+
+                <span>HORARIOS</span>
+
+                <h2>Organizá los horarios de consumo</h2>
+
+                <p>Adaptá el funcionamiento de los equipos a la actividad de tu empresa.</p>
+
+                <ul>
+                    <li>Identificá los horarios de mayor consumo.</li>
+                    <li>Planificá el uso de los dispositivos.</li>
+                    <li>Revisá el consumo fuera de la jornada laboral.</li>
+                </ul>
+
+            </article>
+
+            <article class="guia-articulo" id="mantenimiento">
+
+                <span>MANTENIMIENTO</span>
+
+                <h2>Cuidá tus instalaciones</h2>
+
+                <p>El mantenimiento preventivo ayuda a conservar la eficiencia energética.</p>
+
+                <ul>
+                    <li>Programá revisiones con personal capacitado.</li>
+                    <li>Registrá las fechas de mantenimiento.</li>
+                    <li>Detectá equipos con funcionamiento irregular.</li>
+                </ul>
+
+            </article>
+
+            <article class="guia-articulo" id="monitoreo">
+
+                <span>MONITOREO</span>
+
+                <h2>Conocé tus consumos</h2>
+
+                <p>Utilizá los informes de Electrify para tomar mejores decisiones.</p>
+
+                <ul>
+                    <li>Compará los consumos de distintos períodos.</li>
+                    <li>Identificá los sectores de mayor consumo.</li>
+                    <li>Evaluá los resultados de las estrategias aplicadas.</li>
+                </ul>
+
+                <a class="guia-boton"
+                   href='@Url.Action("Estrategias", "Home")'>
+                    Explorar estrategias
+                </a>
+
+            </article>
+
         </div>
 
     </div>
-
-    <section class="consejos-final">
-
-        <div>
-            <h2>¿Buscás un ahorro más específico?</h2>
-            <p>Explorá las estrategias energéticas para tu empresa.</p>
-        </div>
-
-        <a class="boton-consejo"
-           href='@Url.Action("Estrategias", "Home")'>
-            Ver estrategias
-        </a>
-
-    </section>
 
 </div>

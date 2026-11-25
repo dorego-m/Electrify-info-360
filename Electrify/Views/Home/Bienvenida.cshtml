@@ -1,15 +1,118 @@
 @{
-    ViewData["Title"] = "Mi cuenta";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-5">Bienvenido, @ViewBag.Nombre @ViewBag.Apellido</h1>
-    <p>Ya iniciaste sesion en Electrify.</p>
-    <p><strong>Email:</strong> @ViewBag.Email</p>
-    <p><strong>Rol:</strong> @ViewBag.Rol</p>
-    <p><strong>Empresa:</strong> @ViewBag.NombreEmpresa</p>
-    <a asp-controller="Home" asp-action="Usuario" class="btn btn-primary mb-3">Ir al panel de usuario</a>
-    <form asp-controller="Home" asp-action="Logout" method="post">
-        <button type="submit" class="btn btn-outline-danger">Cerrar sesion</button>
-    </form>
+<div class="home-usuario">
+
+    <section class="home-bienvenida">
+
+        <div>
+            <span>TU ESPACIO DE TRABAJO</span>
+            <h1>Bienvenido, @ViewBag.Nombre</h1>
+            <p>Gestioná la energía de tu empresa desde un solo lugar.</p>
+        </div>
+
+        <div class="home-empresa">
+            <p>Tu empresa</p>
+            <h3>@ViewBag.NombreEmpresa</h3>
+        </div>
+
+    </section>
+
+    <section class="home-destacado">
+
+        <div class="home-destacado-texto">
+
+            <span>GESTIÓN ENERGÉTICA</span>
+
+            <h2>Tomá el control de tu consumo.</h2>
+
+            <p>
+                Conocé el rendimiento energético de tu empresa
+                y encontrá nuevas oportunidades de ahorro.
+            </p>
+
+            <a class="home-boton"
+               href='@Url.Action("Usuario", "Home")'>
+                Ir al panel de usuario
+            </a>
+
+        </div>
+
+        <img src="~/img/LogoElectrifyPNG.png"
+             alt="Electrify">
+
+    </section>
+
+    <h2 class="home-titulo">¿Qué querés hacer hoy?</h2>
+
+    <div class="home-accesos">
+
+        <article class="home-tarjeta">
+            <span>01 / ANÁLISIS</span>
+
+            <h3>Informes de consumo</h3>
+
+            <p>Consultá y analizá el rendimiento energético de tu empresa.</p>
+
+            <a href='@Url.Action("InformeConsumo", "Home")'>
+                Ver informes →
+            </a>
+        </article>
+
+        <article class="home-tarjeta">
+            <span>02 / OPTIMIZACIÓN</span>
+
+            <h3>Estrategias de ahorro</h3>
+
+            <p>Encontrá oportunidades para optimizar tus recursos y reducir gastos.</p>
+
+            <a href='@Url.Action("Estrategias", "Home")'>
+                Ver estrategias →
+            </a>
+        </article>
+
+        <article class="home-tarjeta">
+            <span>03 / EFICIENCIA</span>
+
+            <h3>Consejos energéticos</h3>
+
+            <p>Incorporá mejores hábitos de consumo en tu empresa.</p>
+
+            <a href='@Url.Action("Consejos", "Home")'>
+                Explorar consejos →
+            </a>
+        </article>
+
+        <article class="home-tarjeta">
+            <span>04 / ASISTENCIA</span>
+
+            <h3>Asistente inteligente</h3>
+
+            <p>Consultá tus dudas sobre consumo y eficiencia energética.</p>
+
+            <a href='@Url.Action("IAchat", "Home")'>
+                Iniciar conversación →
+            </a>
+        </article>
+
+    </div>
+
+    <section class="home-consejo">
+
+        <div>
+            <span>CONSEJO DESTACADO</span>
+
+            <h3>Reducí el consumo fuera del horario laboral.</h3>
+
+            <p>Identificá los dispositivos que permanecen encendidos innecesariamente.</p>
+        </div>
+
+        <a class="home-boton"
+           href='@Url.Action("Consejos", "Home")'>
+            Ver consejos
+        </a>
+
+    </section>
+
 </div>
