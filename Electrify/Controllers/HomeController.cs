@@ -694,6 +694,20 @@ public IActionResult ObtenerDatosInforme(DateTime fechaInicio, DateTime fechaFin
         promedioDiario
     });
 }
+
+[HttpGet]
+public IActionResult Consejos()
+{
+    IActionResult acceso = VerificarSesion();
+
+    if (acceso != null)
+    {
+        return acceso;
+    }
+
+    return View();
+}
+
    
       
 [HttpGet]

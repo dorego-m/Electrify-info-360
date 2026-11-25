@@ -49,6 +49,27 @@
         {
             <div class="alert alert-info">Tu cuenta puede consultar el panel. Las acciones de administración están disponibles para la cuenta administradora de la empresa.</div>
         }
+        <div class="consejo-panel">
+
+            <div class="consejo-panel-texto">
+
+                <span>CONSEJO DESTACADO</span>
+
+                <h3>Reducí el consumo fuera del horario laboral</h3>
+
+                <p>
+                    Identificá los dispositivos que no necesitan
+                    permanecer encendidos cuando tu empresa está cerrada.
+                </p>
+
+            </div>
+
+            <a class="boton-consejo"
+            href='@Url.Action("Consejos", "Home")'>
+                Ver todos los consejos
+            </a>
+
+        </div>
 
         <h4 class="mt-4">Últimos registros de consumo</h4>
         @if (registros.Count == 0)

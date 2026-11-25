@@ -1,0 +1,156 @@
+@{
+    ViewData["Title"] = "Consejos";
+}
+
+<div class="guia-consejos">
+
+    <div class="guia-encabezado">
+        <h1>Guía de eficiencia energética</h1>
+        <p>Recomendaciones prácticas para mejorar el consumo de tu empresa.</p>
+    </div>
+
+    <div class="guia-contenido">
+
+        <aside class="guia-menu">
+
+            <h3>Categorías</h3>
+
+            <a href="#iluminacion">Iluminación</a>
+            <a href="#climatizacion">Climatización</a>
+            <a href="#equipos">Equipamiento</a>
+            <a href="#horarios">Horarios</a>
+            <a href="#mantenimiento">Mantenimiento</a>
+            <a href="#monitoreo">Monitoreo</a>
+
+            <hr>
+
+            <h3>Conocé tus consumos</h3>
+
+            <p>Identificá oportunidades de ahorro en tu empresa.</p>
+
+            <a class="guia-boton"
+               href='@Url.Action("InformeConsumo", "Home")'>
+                Ver informes
+            </a>
+
+        </aside>
+
+        <div class="guia-articulos">
+
+            <article class="guia-articulo" id="iluminacion">
+                    <img class="guia-imagen"
+            src="~/img/iluminacion.jpg"
+            alt="Iluminación natural">
+
+                <span>ILUMINACIÓN</span>
+
+                <h2>Aprovechá la iluminación natural</h2>
+
+                <p>Reducí el uso de iluminación artificial durante las horas de mayor luz solar.</p>
+
+                <h3>¿Cómo implementarlo?</h3>
+
+                <ul>
+                    <li>Ubicá los puestos de trabajo cerca de las ventanas.</li>
+                    <li>Apagá las luces de los espacios desocupados.</li>
+                    <li>Evaluá el reemplazo de luminarias por LED.</li>
+                </ul>
+
+            </article>
+
+            <article class="guia-articulo" id="climatizacion">
+            <img class="guia-imagen" src="~/img/climatizacion.jpg" alt="Climatización">
+
+                <span>CLIMATIZACIÓN</span>
+
+                <h2>Optimizá la temperatura</h2>
+
+                <p>Mejorá la eficiencia de los equipos sin afectar el confort de los trabajadores.</p>
+
+                <h3>¿Cómo implementarlo?</h3>
+
+                <ul>
+                    <li>Evitá climatizar espacios desocupados.</li>
+                    <li>Mantené puertas y ventanas cerradas cuando corresponda.</li>
+                    <li>Programá revisiones periódicas de los equipos.</li>
+                </ul>
+
+            </article>
+
+            <article class="guia-articulo" id="equipos">
+            <img class="guia-imagen" src="~/img/equipamiento.jpg" alt="Equipamiento">
+
+                <span>EQUIPAMIENTO</span>
+
+                <h2>Reducí el consumo innecesario</h2>
+
+                <p>Identificá los dispositivos que consumen energía sin estar siendo utilizados.</p>
+
+                <h3>¿Cómo implementarlo?</h3>
+
+                <ul>
+                    <li>Apagá los equipos que no necesiten funcionar.</li>
+                    <li>Activá los modos de ahorro energético.</li>
+                    <li>Evaluá la eficiencia de los nuevos dispositivos.</li>
+                </ul>
+
+            </article>
+
+            <article class="guia-articulo" id="horarios">
+
+                <span>HORARIOS</span>
+
+                <h2>Organizá los horarios de consumo</h2>
+
+                <p>Adaptá el funcionamiento de los equipos a la actividad de tu empresa.</p>
+
+                <ul>
+                    <li>Identificá los horarios de mayor consumo.</li>
+                    <li>Planificá el uso de los dispositivos.</li>
+                    <li>Revisá el consumo fuera de la jornada laboral.</li>
+                </ul>
+
+            </article>
+
+            <article class="guia-articulo" id="mantenimiento">
+
+                <span>MANTENIMIENTO</span>
+
+                <h2>Cuidá tus instalaciones</h2>
+
+                <p>El mantenimiento preventivo ayuda a conservar la eficiencia energética.</p>
+
+                <ul>
+                    <li>Programá revisiones con personal capacitado.</li>
+                    <li>Registrá las fechas de mantenimiento.</li>
+                    <li>Detectá equipos con funcionamiento irregular.</li>
+                </ul>
+
+            </article>
+
+            <article class="guia-articulo" id="monitoreo">
+
+                <span>MONITOREO</span>
+
+                <h2>Conocé tus consumos</h2>
+
+                <p>Utilizá los informes de Electrify para tomar mejores decisiones.</p>
+
+                <ul>
+                    <li>Compará los consumos de distintos períodos.</li>
+                    <li>Identificá los sectores de mayor consumo.</li>
+                    <li>Evaluá los resultados de las estrategias aplicadas.</li>
+                </ul>
+
+                <a class="guia-boton"
+                   href='@Url.Action("Estrategias", "Home")'>
+                    Explorar estrategias
+                </a>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</div>
