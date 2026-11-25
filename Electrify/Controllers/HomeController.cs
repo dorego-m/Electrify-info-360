@@ -752,4 +752,14 @@ public IActionResult AplicarEstrategia(string tipo)
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
+
+
+    public IActionResult IAchat()
+{
+    ViewData["Inicio"] = true;
+    return View("Iachat");
 }
+
+}
+
