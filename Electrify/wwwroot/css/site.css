@@ -507,7 +507,7 @@ header {
     padding: 24px;
     border: 1px solid rgba(80, 180, 220, 0.25);
     border-radius: 12px;
-    background: linear-gradient(160deg, rgba(8, 30, 45, 0.85), rgba(5, 58, 122, 0.45));
+    background: linear-gradient(160deg, rgba(88, 188, 255, 0.85), rgba(87, 163, 255, 0.45));
 }
 
 .tarjeta h3 {
@@ -652,5 +652,277 @@ header {
     .inicio-contenido,
     .barra-relleno {
         animation: none;
+    }
+}
+
+/* Navegacion */
+
+.header-centro {
+    gap: 28px;
+}
+
+.header-der {
+    gap: 15px;
+}
+
+header .nav-enlace {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+header .nav-enlace:hover {
+    color: #5fd4f4;
+}
+
+header .nav-login,
+header .nav-registro {
+    color: white;
+}
+
+header .nav-login:hover,
+header .nav-registro:hover {
+    color: white;
+}
+
+.nav-enlace:hover {
+    color: #5fd4f4;
+}
+
+.nav-login, .nav-registro {
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+}
+
+.nav-login {
+    border: 1px solid #5fd4f4;
+}
+
+.nav-registro {
+    background-color: #2675ed;
+}
+
+.nav-login:hover, .nav-registro:hover {
+    background-color: #1560b0;
+    color: white;
+}
+
+/* Inicio */
+
+.landing-hero {
+    min-height: 75vh;
+    padding: 60px 5%;
+    background: linear-gradient(to right, #060b19, #163a80);
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: 40px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.hero-texto h1 {
+    font-size: 36px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 25px;
+}
+
+.hero-texto h1 span {
+    color: #62d5f2;
+}
+
+.hero-texto p {
+    font-size: 20px;
+    color: #c3d5eb;
+    margin-bottom: 35px;
+}
+
+.hero-botones {
+    display: flex;
+    gap: 15px;
+}
+
+.hero-botones a {
+    padding: 14px 25px;
+    font-size: 16px;
+}
+
+.hero-imagen img {
+    width: 100%;
+    height: auto;
+}
+
+/* Secciones */
+
+.landing-contenedor {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.landing-seccion {
+    padding: 60px 5%;
+}
+
+.landing-titulo {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.landing-texto {
+    font-size: 18px;
+}
+
+.landing-texto.landing-centrado {
+    width: 90%;
+    margin: 0 auto 35px;
+    text-align: center;
+}
+
+/* Sobre Electrify */
+
+#que-es {
+    background: linear-gradient(to right, #060b19, #0c2850);
+}
+
+.indicador {
+    padding: 20px;
+    border: 1px solid #315d80;
+    border-radius: 12px;
+    background-color: #0d2038;
+}
+
+.indicador h3 {
+    font-size: 19px;
+    margin-bottom: 10px;
+}
+
+.indicador p {
+    font-size: 15px;
+}
+
+.panel-demo {
+    padding: 35px;
+    border: 1px solid #399fd1;
+    border-radius: 20px;
+    background: #0c203d;
+}
+
+.panel-demo h3 {
+    font-size: 24px;
+}
+
+.barra-fila {
+    margin-bottom: 22px;
+}
+
+.barra {
+    height: 14px;
+}
+
+/* Problemas */
+
+#problemas {
+    background-color: #081a32;
+}
+
+#problemas .landing-contenedor {
+    background-color: #e4effc;
+    border-radius: 24px;
+    padding: 3%;
+}
+
+#problemas .landing-titulo {
+    color: #0a1930;
+}
+
+#problemas .landing-texto {
+    color: #344c65;
+}
+
+#problemas .tarjeta {
+    background-color: #f5f9ff;
+    border: 1px solid #b6d4f4;
+    border-top: 4px solid #2675ed;
+    border-radius: 8px;
+    padding: 25px;
+}
+
+#problemas .tarjeta h3 {
+    color: #0a1930;
+    font-size: 21px;
+}
+
+#problemas .tarjeta p {
+    color: #344c65;
+    font-size: 16px;
+}
+
+#problemas .tarjeta:hover {
+    border-color: #168bd2;
+}
+
+
+/* Como funciona */
+
+#como-funciona {
+    background: linear-gradient(to right, #081a32, #0a284b);
+}
+
+.paso {
+    text-align: center;
+    padding: 20px;
+}
+
+.paso-numero {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 20px;
+    font-size: 26px;
+    background-color: #102b48;
+    color: #5fd4f4;
+    border: 2px solid #5fd4f4;
+}
+
+.paso h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+.paso p {
+    font-size: 16px;
+}
+
+/* Responsive */
+
+@media (min-width: 768px) {
+    .hero-texto h1 {
+        font-size: 50px;
+    }
+
+    .hero-botones {
+    grid-template-columns: 1fr 1fr;
+}
+
+    .landing-titulo {
+        font-size: 36px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .hero-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .landing-seccion {
+        padding: 80px 5%;
     }
 }

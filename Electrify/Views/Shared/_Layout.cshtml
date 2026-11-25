@@ -30,6 +30,12 @@
                 <a class="boton-menu" href='@Url.Action("Estrategias", "Home")'>Estrategias</a>
                 <a class="boton-menu" href='@Url.Action("IA Chat", "Home")'>IA Chat</a>
             }
+            else if (esInicio)
+        {
+            <a class="nav-enlace" href="#que-es">Sobre nosotros</a>
+            <a class="nav-enlace" href="#problemas">Beneficios</a>
+            <a class="nav-enlace" href="#como-funciona">Cómo funciona</a>
+        }
         </nav>
 
         <div class="header-der">
@@ -39,10 +45,16 @@
                 <form method="post" action='@Url.Action("Logout", "Home")'>
                     <button class="boton-salir" type="submit">Cerrar sesión</button>
                 </form>
-            }
-            else
+                        }
+                    else
             {
-                <a class="link-login" href='@Url.Action("Login", "Home")'>Log In</a>
+                <a class="nav-login" href='@Url.Action("Login", "Home")'>
+                    Iniciar sesión
+                </a>
+
+                <a class="nav-registro" href='@Url.Action("RegistrarEmpresa", "Home")'>
+                    Registrate
+                </a>
             }
   
         </div>
