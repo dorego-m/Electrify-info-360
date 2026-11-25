@@ -1,0 +1,88 @@
+@{
+    ViewData["Title"] = "Consejos";
+}
+
+<div class="pagina-consejos">
+
+    <section class="encabezado-consejos">
+        <span>GESTIÓN ENERGÉTICA</span>
+
+        <h1>Cada cambio cuenta.</h1>
+
+        <p>Incorporá mejores hábitos y optimizá el consumo energético de tu empresa.</p>
+    </section>
+
+    <section class="consejo-destacado">
+
+        <span>CONSEJO DESTACADO</span>
+
+        <h2>Identificá el consumo fuera del horario laboral</h2>
+
+        <p>Revisá qué dispositivos permanecen encendidos cuando tu empresa no está operando. Esto te permitirá detectar consumos innecesarios.</p>
+
+        <a class="boton-consejo"
+           href='@Url.Action("InformeConsumo", "Home")'>
+            Ver mis informes
+        </a>
+
+    </section>
+
+    <h2 class="titulo-recomendaciones">
+        Recomendaciones para tu empresa
+    </h2>
+
+    <div class="contenedor-consejos">
+
+        <div class="tarjeta-consejo">
+            <span>01 / ILUMINACIÓN</span>
+            <h3>Aprovechá la luz natural</h3>
+            <p>Reducí el uso de iluminación artificial durante las horas de mayor luz solar.</p>
+        </div>
+
+        <div class="tarjeta-consejo">
+            <span>02 / CLIMATIZACIÓN</span>
+            <h3>Optimizá la temperatura</h3>
+            <p>Mantené una temperatura confortable y realizá un mantenimiento periódico de los equipos.</p>
+        </div>
+
+        <div class="tarjeta-consejo">
+            <span>03 / EQUIPOS</span>
+            <h3>Evitá consumos innecesarios</h3>
+            <p>Apagá los dispositivos que no necesiten permanecer encendidos al finalizar la jornada.</p>
+        </div>
+
+        <div class="tarjeta-consejo">
+            <span>04 / HORARIOS</span>
+            <h3>Organizá el consumo</h3>
+            <p>Planificá el funcionamiento de los equipos según los horarios de actividad de tu empresa.</p>
+        </div>
+
+        <div class="tarjeta-consejo">
+            <span>05 / MANTENIMIENTO</span>
+            <h3>Cuidá tus instalaciones</h3>
+            <p>Realizá revisiones periódicas con personal capacitado para mantener la eficiencia de los equipos.</p>
+        </div>
+
+        <div class="tarjeta-consejo">
+            <span>06 / MONITOREO</span>
+            <h3>Conocé tus consumos</h3>
+            <p>Consultá los informes energéticos para identificar los sectores que más energía utilizan.</p>
+        </div>
+
+    </div>
+
+    <section class="consejos-final">
+
+        <div>
+            <h2>¿Buscás un ahorro más específico?</h2>
+            <p>Explorá las estrategias energéticas para tu empresa.</p>
+        </div>
+
+        <a class="boton-consejo"
+           href='@Url.Action("Estrategias", "Home")'>
+            Ver estrategias
+        </a>
+
+    </section>
+
+</div>

@@ -657,6 +657,19 @@ public IActionResult InformeConsumo(DateTime? fechaInicio, DateTime? fechaFin)
     return View(informe);
 }
 
+[HttpGet]
+public IActionResult Consejos()
+{
+    IActionResult acceso = VerificarSesion();
+
+    if (acceso != null)
+    {
+        return acceso;
+    }
+
+    return View();
+}
+
    
       
 [HttpGet]
