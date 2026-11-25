@@ -35,39 +35,106 @@ const data = datosElemento ? {
         });
     }
 
-    function actualizarSectores(row) {
-        const sectorSelect = row.querySelector(".sector-detalle");
-        const selectedSede = Number(sedeSelect.value);
-        const old = sectorSelect.value;
+    
+async function actualizarSectores(row, recuperarAnterior = false) {
+    const sectorSelect = row.querySelector(".sector-detalle");
+    const dispositivoSelect = row.querySelector(".dispositivo-detalle");
+
+    const idSede = Number(sedeSelect.value);
+    const sectorInicial = recuperarAnterior
+        ? sectorSelect.dataset.sectorInicial
+        : "";
+
+    sectorSelect.innerHTML = '<option value="">Cargando sectores...</option>';
+    dispositivoSelect.innerHTML = '<option value="">Seleccioná dispositivo</option>';
+
+    if (!idSede) {
         sectorSelect.innerHTML = '<option value="">Seleccioná sector</option>';
-        data.sectores.filter(s => s.IDSede === selectedSede).forEach(s => {
-    const option = document.createElement("option");
-    option.value = s.IDSector;
-    option.textContent = s.Nombre;
-    sectorSelect.appendChild(option);
-});
-        if ([...sectorSelect.options].some(o => o.value === old)) sectorSelect.value = old;
-        actualizarDispositivos(row);
+        return;
     }
 
-    function actualizarDispositivos(row) {
-        const sectorId = Number(row.querySelector(".sector-detalle").value);
-        const select = row.querySelector(".dispositivo-detalle");
-        const old = select.value;
-        select.innerHTML = '<option value="">Seleccioná dispositivo</option>';
-        data.dispositivos.filter(d =>
-    d.IDSector === sectorId &&
-    d.IDSede === Number(sedeSelect.value)
-).forEach(d => {
-    const option = document.createElement("option");
-    option.value = d.IDDispositivo;
-    option.dataset.potencia = d.Potencia ?? 0;
-    option.textContent = `${d.Nombre} (${d.Potencia ?? 0} W)`;
-    select.appendChild(option);
-});
-        if ([...select.options].some(o => o.value === old)) select.value = old;
+    try {
+        const respuesta = await fetch(
+            `/Home/ObtenerSectoresPorSede?idSede=${idSede}`,
+            { method: "GET" }
+        );
+
+        if (!respuesta.ok) throw new Error("No se pudieron obtener los sectores.");
+
+        const sectores = await respuesta.json();
+
+        sectorSelect.innerHTML = '<option value="">Seleccioná sector</option>';
+
+        sectores.forEach(sector => {
+            const option = document.createElement("option");
+            option.value = sector.idSector;
+            option.textContent = sector.nombre;
+            sectorSelect.appendChild(option);
+        });
+
+        if (sectorInicial) {
+            sectorSelect.value = sectorInicial;
+        }
+
+        if (sectorSelect.value) {
+            await actualizarDispositivos(row, recuperarAnterior);
+        }
+    }
+    catch (error) {
+        console.error("Error al cargar sectores:", error);
+        sectorSelect.innerHTML = '<option value="">Error al cargar sectores</option>';
+    }
+}
+
+async function actualizarDispositivos(row, recuperarAnterior = false) {
+    const sectorSelect = row.querySelector(".sector-detalle");
+    const dispositivoSelect = row.querySelector(".dispositivo-detalle");
+
+    const idSector = Number(sectorSelect.value);
+    const dispositivoInicial = recuperarAnterior
+        ? dispositivoSelect.dataset.dispositivoInicial
+        : "";
+
+    dispositivoSelect.innerHTML = '<option value="">Cargando dispositivos...</option>';
+
+    if (!idSector) {
+        dispositivoSelect.innerHTML = '<option value="">Seleccioná dispositivo</option>';
+        calcular();
+        return;
+    }
+
+    try {
+        const respuesta = await fetch(
+            `/Home/ObtenerDispositivosPorSector?idSector=${idSector}`,
+            { method: "GET" }
+        );
+
+        if (!respuesta.ok) throw new Error("No se pudieron obtener los dispositivos.");
+
+        const dispositivos = await respuesta.json();
+
+        dispositivoSelect.innerHTML = '<option value="">Seleccioná dispositivo</option>';
+
+        dispositivos.forEach(dispositivo => {
+            const option = document.createElement("option");
+            option.value = dispositivo.idDispositivo;
+            option.dataset.potencia = dispositivo.potencia ?? 0;
+            option.textContent = `${dispositivo.nombre} (${dispositivo.potencia ?? 0} W)`;
+            dispositivoSelect.appendChild(option);
+        });
+
+        if (dispositivoInicial) {
+            dispositivoSelect.value = dispositivoInicial;
+        }
+
         calcular();
     }
+    catch (error) {
+        console.error("Error al cargar dispositivos:", error);
+        dispositivoSelect.innerHTML = '<option value="">Error al cargar dispositivos</option>';
+    }
+}
+
 
     function crearFila() {
         const row = document.createElement("div");
@@ -80,7 +147,6 @@ const data = datosElemento ? {
             <div class="small text-muted resumen-detalle">Elegí un dispositivo para calcular el consumo estimado.</div>`;
         container.appendChild(row);
         actualizarIndices();
-        actualizarSectores(row);
         return row;
     }
 
@@ -102,7 +168,14 @@ const data = datosElemento ? {
     }
 
     addButton.addEventListener("click", crearFila);
-    sedeSelect.addEventListener("change", () => container.querySelectorAll(".detalle-consumo").forEach(actualizarSectores));
+    sedeSelect.addEventListener("change", () => {
+    container.querySelectorAll(".detalle-consumo").forEach(row => {
+        row.querySelector(".sector-detalle").dataset.sectorInicial = "";
+        row.querySelector(".dispositivo-detalle").dataset.dispositivoInicial = "";
+
+        actualizarSectores(row);
+        });
+    });
     tarifa.addEventListener("input", calcular);
     fechaInicio.addEventListener("change", () => {
         if (fechaFin.value && fechaInicio.value > fechaFin.value) fechaFin.value = fechaInicio.value;
@@ -113,12 +186,21 @@ const data = datosElemento ? {
         container.querySelectorAll(".dias-detalle").forEach(input => input.max = days);
     });
 
-    container.addEventListener("change", event => {
-        const row = event.target.closest(".detalle-consumo");
-        if (!row) return;
-        if (event.target.classList.contains("sector-detalle")) actualizarDispositivos(row);
-        else if (event.target.classList.contains("dispositivo-detalle")) calcular();
-    });
+
+    container.addEventListener("change", (e) => {
+    const elemento = e.target;
+    const row = elemento.closest(".detalle-consumo");
+
+    if (!row) return;
+
+    if (elemento.classList.contains("sector-detalle")) {
+        actualizarDispositivos(row);
+    }
+    else if (elemento.classList.contains("dispositivo-detalle")) {
+        calcular();
+    }
+});
+
     container.addEventListener("input", event => { if (event.target.matches("input")) calcular(); });
     container.addEventListener("click", event => {
         const button = event.target.closest(".quitar-detalle");
@@ -150,8 +232,7 @@ const data = datosElemento ? {
     });
 
     container.querySelectorAll(".detalle-consumo").forEach(row => {
-        actualizarSectores(row);
-        row.querySelector(".sector-detalle").addEventListener("change", () => actualizarDispositivos(row));
-    });
-    calcular();
+    actualizarSectores(row, true);
+});
+calcular();
 })();

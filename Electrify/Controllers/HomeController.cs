@@ -590,6 +590,32 @@ private void CargarDatosFormulario()
     ViewBag.Registros = bd.ObtenerRegistrosConsumo(idEmpresa);
 }
 
+[HttpGet]
+public List<Sector> ObtenerSectoresPorSede(int idSede)
+{
+    int? idEmpresa = HttpContext.Session.GetInt32("IDEmpresa");
+
+    if (idEmpresa == null || !EsAdministradorEmpresa() || idSede <= 0)
+        return new List<Sector>();
+
+    BD bd = new BD();
+
+    return bd.ObtenerSectores(idEmpresa.Value, true, idSede);
+}
+
+[HttpGet]
+public List<Dispositivo> ObtenerDispositivosPorSector(int idSector)
+{
+    int? idEmpresa = HttpContext.Session.GetInt32("IDEmpresa");
+
+    if (idEmpresa == null || !EsAdministradorEmpresa() || idSector <= 0)
+        return new List<Dispositivo>();
+
+    BD bd = new BD();
+
+    return bd.ObtenerDispositivos(idEmpresa.Value, true, idSector);
+}
+
     [HttpGet]
 public IActionResult InformeConsumo(DateTime? fechaInicio, DateTime? fechaFin)
 {

@@ -384,6 +384,9 @@ header {
 
 .landing-centrado {
     text-align: center;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .landing-titulo {
@@ -402,7 +405,7 @@ header {
     color: #cfe6f2;
 }
 
-.landing-centrado .landing-texto {
+.landing-texto.landing-centrado {
     margin-left: auto;
     margin-right: auto;
 }

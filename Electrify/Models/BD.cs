@@ -123,19 +123,28 @@ public void RegistrarEmpresa(
             commandType: CommandType.StoredProcedure).ToList();
     }
 
-    public List<Sector> ObtenerSectores(int idEmpresa, bool soloActivos = false)
+    public List<Sector> ObtenerSectores(int idEmpresa, bool soloActivos = false, int? idSede = null)
     {
         using var connection = new SqlConnection(_connectionString);
+
         return connection.Query<Sector>("sp_Infraestructura_SectoresPorEmpresa",
-            new { IDEmpresa = idEmpresa, SoloActivos = soloActivos },
+        new { IDEmpresa = idEmpresa, SoloActivos = soloActivos,  IDSede = idSede},
             commandType: CommandType.StoredProcedure).ToList();
     }
 
-    public List<Dispositivo> ObtenerDispositivos(int idEmpresa, bool soloActivos = false)
+
+    public List<Dispositivo> ObtenerDispositivos(int idEmpresa, bool soloActivos = false, int? idSector = null)
     {
         using var connection = new SqlConnection(_connectionString);
-        return connection.Query<Dispositivo>("sp_Infraestructura_DispositivosPorEmpresa",
-            new { IDEmpresa = idEmpresa, SoloActivos = soloActivos },
+
+        return connection.Query<Dispositivo>(
+            "sp_Infraestructura_DispositivosPorEmpresa",
+            new
+            {
+                IDEmpresa = idEmpresa,
+                SoloActivos = soloActivos,
+                IDSector = idSector
+            },
             commandType: CommandType.StoredProcedure).ToList();
     }
 

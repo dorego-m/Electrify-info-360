@@ -45,34 +45,24 @@
 
         <div class="mb-3">
             <label class="form-label">Sector</label>
-            <select class="form-select sector-detalle" required>
+            <select class="form-select sector-detalle"
+                    data-sector-inicial="@(
+                        dispositivos.FirstOrDefault(
+                            d => d.IDDispositivo == Model.Detalles[i].IDDispositivo
+                        )?.IDSector ?? 0
+                    )"
+                    required>
                 <option value="">Seleccioná sector</option>
-                @foreach (var sector in sectores)
-                {
-                    <option value="@sector.IDSector"
-                            data-sede="@sector.IDSede"
-                            selected="@(Model.Detalles[i].IDDispositivo > 0 && dispositivos.Any(d => d.IDDispositivo == Model.Detalles[i].IDDispositivo && d.IDSector == sector.IDSector))">
-                        @sector.NombreSede - @sector.Nombre
-                    </option>
-                }
             </select>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Dispositivo</label>
-            <select name="Detalles[@i].IDDispositivo" class="form-select dispositivo-detalle" required>
+            <select name="Detalles[@i].IDDispositivo"
+                    class="form-select dispositivo-detalle"
+                    data-dispositivo-inicial="@Model.Detalles[i].IDDispositivo"
+                    required>
                 <option value="">Seleccioná dispositivo</option>
-                @foreach (var dispositivo in dispositivos)
-                {
-                    <option value="@dispositivo.IDDispositivo"
-                            data-sector="@dispositivo.IDSector"
-                            data-sede="@dispositivo.IDSede"
-                            data-potencia="@(dispositivo.Potencia ?? 0)"
-                            data-nombre="@dispositivo.Nombre"
-                            selected="@(dispositivo.IDDispositivo == Model.Detalles[i].IDDispositivo)">
-                        @dispositivo.Nombre (@dispositivo.Potencia W)
-                    </option>
-                }
             </select>
         </div>
 
@@ -127,10 +117,5 @@
     else { <div class="table-responsive"><table class="table table-striped"><thead><tr><th>Sede</th><th>Período</th><th>Consumo total</th><th>Costo estimado</th><th>Creado</th><th></th></tr></thead><tbody>@foreach (var registro in registros) { <tr><td>@registro.NombreSede</td><td>@registro.FechaInicio.ToString("dd/MM/yyyy") - @registro.FechaFin.ToString("dd/MM/yyyy")</td><td>@registro.ConsumoTotal.ToString("N2") kWh</td><td>$@registro.CostoEstimado.ToString("N2")</td><td>@registro.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</td><td><a asp-action="EditarFormulario" asp-route-id="@registro.IDRegistro" class="btn btn-sm btn-outline-primary">Editar</a></td></tr> }</tbody></table></div> }
     <a asp-action="Usuario" class="btn btn-secondary mt-3">Volver al panel</a>
 </div></div>
-
-<div id="datosInfraestructura"
-     data-sectores="@System.Text.Json.JsonSerializer.Serialize(sectores)"
-     data-dispositivos="@System.Text.Json.JsonSerializer.Serialize(dispositivos)">
-</div>
 
 <script src="~/js/formulario-consumo.js" asp-append-version="true"></script>
