@@ -381,7 +381,7 @@ public List<Estrategia> ObtenerEstrategiasAplicadas(int idEmpresa)
     ).ToList();
 }
 
-public void AplicarEstrategia(
+public ResultadoEstrategia AplicarEstrategia(
     int idEmpresa,
     string nombre,
     string descripcion,
@@ -389,7 +389,7 @@ public void AplicarEstrategia(
 {
     using var connection = new SqlConnection(_connectionString);
 
-    connection.Execute(
+    return connection.QueryFirst<ResultadoEstrategia>(
         "sp_Estrategia_Crear",
         new
         {
@@ -397,6 +397,23 @@ public void AplicarEstrategia(
             Nombre = nombre,
             Descripcion = descripcion,
             Objetivo = objetivo
+        },
+        commandType: CommandType.StoredProcedure
+    );
+}
+
+public ResultadoEstrategia DesactivarEstrategia(
+    int idEstrategia,
+    int idEmpresa)
+{
+    using var connection = new SqlConnection(_connectionString);
+
+    return connection.QueryFirst<ResultadoEstrategia>(
+        "sp_Estrategia_Desactivar",
+        new
+        {
+            IDEstrategia = idEstrategia,
+            IDEmpresa = idEmpresa
         },
         commandType: CommandType.StoredProcedure
     );

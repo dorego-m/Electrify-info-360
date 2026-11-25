@@ -42,3 +42,9 @@ public class Estrategia
     public DateTime? FechaFin { get; set; }
     public string Estado { get; set; } = "";
 }
+
+public class ResultadoEstrategia
+{
+    public bool Correcto { get; set; }
+    public string Mensaje { get; set; } = "";
+}

@@ -8,12 +8,14 @@
 <div class="container-fluid estrategias-container">
     <h1 class="mb-4">Estrategias de Consumo</h1>
 
-    @if (TempData["MensajeEstrategia"] != null)
-    {
-        <div class="alert alert-success">
-            @TempData["MensajeEstrategia"]
-        </div>
-    }
+   @if (TempData["MensajeEstrategia"] != null)
+{
+    var tipoMensaje = TempData["TipoMensajeEstrategia"]?.ToString() ?? "success";
+
+    <div class="alert alert-@tipoMensaje">
+        @TempData["MensajeEstrategia"]
+    </div>
+}
 
     <div class="row g-4">
         <div class="col-lg-5">
@@ -33,24 +35,53 @@
             <div class="estrategia-panel mt-3">
                 <h5>Estrategias recomendadas</h5>
 
-                @{
-                    var recomendaciones = new[]
-                    {
-                        new { Tipo = "climatizacion", Nombre = "Ajuste de climatización", Texto = "Revisá los horarios y la configuración de los equipos de climatización." },
-                        new { Tipo = "iluminacion", Nombre = "Ajuste de iluminación", Texto = "Aprovechá la luz natural y revisá los horarios de iluminación." },
-                        new { Tipo = "horarios", Nombre = "Controlá tus horarios", Texto = "Identificá los dispositivos que funcionan fuera del horario laboral." },
-                        new { Tipo = "equipos", Nombre = "Ahorro de energía", Texto = "Revisá qué equipos permanecen encendidos cuando no se utilizan." }
-                    };
-                }
-
-                @foreach (var item in recomendaciones)
+                @{var recomendaciones = new[]
                 {
-                    <div class="recomendacion-item">
-                        <div>
-                            <strong>@item.Nombre</strong>
-                            <p>@item.Texto</p>
-                        </div>
+                    new {
+                        Tipo = "climatizacion",
+                        Nombre = "Ajuste de climatización",
+                        Titulo = "Ajuste de climatización",
+                        Texto = "Revisá los horarios y la configuración de los equipos de climatización."
+                    },
+                    new {
+                        Tipo = "iluminacion",
+                        Nombre = "Ajuste de iluminación",
+                        Titulo = "Ajuste de iluminación",
+                        Texto = "Aprovechá la luz natural y revisá los horarios de iluminación."
+                    },
+                    new {
+                        Tipo = "horarios",
+                        Nombre = "Control de horarios",
+                        Titulo = "Controlá tus horarios",
+                        Texto = "Identificá los dispositivos que funcionan fuera del horario laboral."
+                    },
+                    new {
+                        Tipo = "equipos",
+                        Nombre = "Ahorro de energía",
+                        Titulo = "Ahorro de energía",
+                        Texto = "Revisá qué equipos permanecen encendidos cuando no se utilizan."
+                    }
+                };
+            }
 
+            @foreach (var item in recomendaciones)
+            {
+                bool yaAplicada = Model.EstrategiasAplicadas.Any(
+                    e => e.Nombre == item.Nombre && e.Estado == "Aplicada"
+                );
+
+                <div class="recomendacion-item">
+                    <div>
+                        <strong>@item.Titulo</strong>
+                        <p>@item.Texto</p>
+                    </div>
+
+                    @if (yaAplicada)
+                    {
+                        <span class="badge bg-success">Aplicada</span>
+                    }
+                    else
+                    {
                         <form asp-action="AplicarEstrategia" method="post">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="tipo" value="@item.Tipo" />
@@ -58,8 +89,9 @@
                                 Aplicar
                             </button>
                         </form>
-                    </div>
-                }
+                    }
+                </div>
+            }
             </div>
         </div>
 
@@ -132,41 +164,82 @@
     </div>
 
     <div class="estrategia-panel mt-4">
-        <h5>Historial de estrategias aplicadas</h5>
+    <h5>Historial de estrategias</h5>
 
-        @if (Model.EstrategiasAplicadas.Any())
-        {
-            <div class="table-responsive">
-                <table class="table table-dark table-hover align-middle">
-                    <thead>
+    @if (Model.EstrategiasAplicadas.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Estrategia</th>
+                        <th>Descripción</th>
+                        <th>Fecha de inicio</th>
+                        <th>Fecha de finalización</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var estrategia in Model.EstrategiasAplicadas)
+                    {
                         <tr>
-                            <th>Estrategia</th>
-                            <th>Descripción</th>
-                            <th>Fecha</th>
-                            <th>Estado</th>
+                            <td>@estrategia.Nombre</td>
+                            <td>@estrategia.Descripcion</td>
+                            <td>@estrategia.FechaInicio.ToString("dd/MM/yyyy")</td>
+
+                            <td>
+                                @(estrategia.FechaFin.HasValue
+                                    ? estrategia.FechaFin.Value.ToString("dd/MM/yyyy")
+                                    : "-")
+                            </td>
+
+                            <td>
+                                @if (estrategia.Estado == "Aplicada")
+                                {
+                                    <span class="badge bg-success">Aplicada</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Desactivada</span>
+                                }
+                            </td>
+
+                            <td>
+                                @if (estrategia.Estado == "Aplicada")
+                                {
+                                    <form asp-action="DesactivarEstrategia" method="post"
+                                          onsubmit="return confirm('¿Querés desactivar esta estrategia?');">
+                                        @Html.AntiForgeryToken()
+
+                                        <input type="hidden"
+                                               name="idEstrategia"
+                                               value="@estrategia.IDEstrategia" />
+
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            Desactivar
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="text-secondary">-</span>
+                                }
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var estrategia in Model.EstrategiasAplicadas)
-                        {
-                            <tr>
-                                <td>@estrategia.Nombre</td>
-                                <td>@estrategia.Descripcion</td>
-                                <td>@estrategia.FechaInicio.ToString("dd/MM/yyyy")</td>
-                                <td><span class="badge bg-success">@estrategia.Estado</span></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
-        else
-        {
-            <p class="text-secondary mb-0">
-                Todavía no aplicaste ninguna estrategia.
-            </p>
-        }
-    </div>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="text-secondary mb-0">
+            Todavía no aplicaste ninguna estrategia.
+        </p>
+    }
+</div>
 </div>
 
 <div id="datosEstrategias"

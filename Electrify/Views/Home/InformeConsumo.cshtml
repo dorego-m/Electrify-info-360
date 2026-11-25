@@ -70,8 +70,8 @@
         <div class="col-md-4">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
-                    <p class="text-muted mb-1">Consumo estimado</p>
-                    <h3>@(((decimal)ViewBag.ConsumoTotal).ToString("N2")) kWh</h3>
+                    <p class=" mb-1">Consumo estimado</p>
+                    <h3 id="consumoTotal">@(((decimal)ViewBag.ConsumoTotal).ToString("N2")) kWh</h3>
                 </div>
             </div>
         </div>
@@ -79,8 +79,8 @@
         <div class="col-md-4">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
-                    <p class="text-muted mb-1">Costo estimado</p>
-                    <h3>$ @(((decimal)ViewBag.CostoTotal).ToString("N2"))</h3>
+                    <p class=" mb-1">Costo estimado</p>
+                    <h3 id="costoTotal">$ @(((decimal)ViewBag.CostoTotal).ToString("N2"))</h3>
                 </div>
             </div>
         </div>
@@ -88,8 +88,8 @@
         <div class="col-md-4">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
-                    <p class="text-muted mb-1">Promedio diario</p>
-                    <h3>@(((decimal)ViewBag.PromedioDiario).ToString("N2")) kWh</h3>
+                    <p class=" mb-1">Promedio diario</p>
+                    <h3 id="promedioDiario">@(((decimal)ViewBag.PromedioDiario).ToString("N2")) kWh</h3>
                 </div>
             </div>
         </div>
@@ -131,7 +131,7 @@
 </div>
 
 
-    <p class="text-muted small mt-3">
+    <p class=" small mt-3">
         Los valores diarios son estimaciones distribuidas uniformemente
         entre los días de cada formulario, no mediciones reales.
     </p>

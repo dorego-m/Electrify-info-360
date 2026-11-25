@@ -657,6 +657,43 @@ public IActionResult InformeConsumo(DateTime? fechaInicio, DateTime? fechaFin)
     return View(informe);
 }
 
+
+[HttpGet]
+public IActionResult ObtenerDatosInforme(DateTime fechaInicio, DateTime fechaFin)
+{
+    int? idEmpresa = HttpContext.Session.GetInt32("IDEmpresa");
+
+    if (idEmpresa == null)
+        return Unauthorized();
+
+    if (fechaFin < fechaInicio)
+        return BadRequest(new { mensaje = "La fecha final no puede ser anterior a la inicial." });
+
+    BD bd = new BD();
+
+    var informe = bd.ObtenerInformeConsumoDiario(
+        idEmpresa.Value, fechaInicio, fechaFin);
+
+    var desglose = bd.ObtenerInformeConsumoDesglose(
+        idEmpresa.Value, fechaInicio, fechaFin);
+
+    decimal consumoTotal = informe.Sum(x => x.ConsumoKWhEstimado);
+    decimal costoTotal = informe.Sum(x => x.CostoEstimado);
+
+    decimal promedioDiario = informe.Count > 0
+        ? informe.Average(x => x.ConsumoKWhEstimado)
+        : 0m;
+
+    return Json(new
+    {
+        informe,
+        sectores = desglose.Sectores,
+        dispositivos = desglose.Dispositivos,
+        consumoTotal,
+        costoTotal,
+        promedioDiario
+    });
+}
    
       
 [HttpGet]
@@ -689,14 +726,17 @@ public IActionResult AplicarEstrategia(string tipo)
         return acceso;
 
     int? idEmpresa = HttpContext.Session.GetInt32("IDEmpresa");
+
     if (idEmpresa == null)
-      return RedirectToAction("Login");
+        return RedirectToAction("Login");
+
     BD bd = new BD();
+    ResultadoEstrategia resultado;
 
     switch (tipo)
     {
         case "climatizacion":
-            bd.AplicarEstrategia(
+            resultado = bd.AplicarEstrategia(
                 idEmpresa.Value,
                 "Ajuste de climatización",
                 "Revisar la configuración y los horarios de los equipos de climatización.",
@@ -705,7 +745,7 @@ public IActionResult AplicarEstrategia(string tipo)
             break;
 
         case "iluminacion":
-            bd.AplicarEstrategia(
+            resultado = bd.AplicarEstrategia(
                 idEmpresa.Value,
                 "Ajuste de iluminación",
                 "Revisar horarios de iluminación y aprovechar la luz natural.",
@@ -714,7 +754,7 @@ public IActionResult AplicarEstrategia(string tipo)
             break;
 
         case "horarios":
-            bd.AplicarEstrategia(
+            resultado = bd.AplicarEstrategia(
                 idEmpresa.Value,
                 "Control de horarios",
                 "Revisar los horarios de funcionamiento de los dispositivos.",
@@ -723,7 +763,7 @@ public IActionResult AplicarEstrategia(string tipo)
             break;
 
         case "equipos":
-            bd.AplicarEstrategia(
+            resultado = bd.AplicarEstrategia(
                 idEmpresa.Value,
                 "Ahorro de energía",
                 "Identificar equipos que permanecen encendidos sin necesidad.",
@@ -735,24 +775,46 @@ public IActionResult AplicarEstrategia(string tipo)
             return BadRequest();
     }
 
-    TempData["MensajeEstrategia"] = "La estrategia se registró correctamente.";
+    TempData["MensajeEstrategia"] = resultado.Mensaje;
+    TempData["TipoMensajeEstrategia"] =
+        resultado.Correcto ? "success" : "warning";
 
     return RedirectToAction("Estrategias");
 }
 
+[HttpPost]
+[ValidateAntiForgeryToken]
+public IActionResult DesactivarEstrategia(int idEstrategia)
+{
+    IActionResult acceso = VerificarSesion();
 
+    if (acceso != null)
+        return acceso;
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+    int? idEmpresa = HttpContext.Session.GetInt32("IDEmpresa");
+
+    if (idEmpresa == null)
+        return RedirectToAction("Login");
+
+    BD bd = new BD();
+
+    ResultadoEstrategia resultado = bd.DesactivarEstrategia(
+        idEstrategia,
+        idEmpresa.Value
+    );
+
+    TempData["MensajeEstrategia"] = resultado.Mensaje;
+    TempData["TipoMensajeEstrategia"] =
+        resultado.Correcto ? "success" : "warning";
+
+    return RedirectToAction("Estrategias");
+}
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
-
 
 
     public IActionResult IAchat()
