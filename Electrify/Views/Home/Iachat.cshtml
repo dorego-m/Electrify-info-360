@@ -1,0 +1,272 @@
+
+@{
+    ViewData["Title"] = "IA Chat";
+    ViewData["Inicio"] = true;
+}
+
+<div class="ia-pantalla">
+
+    
+    <aside class="ia-sidebar">
+
+        <div class="ia-nuevo">
+            + <span>Nuevo chat</span>
+        </div>
+
+        <div class="ia-bienvenida">
+            <span class="estrella-grande">✦</span>
+            <span>Bienvenido</span>
+        </div>
+
+        <div class="ia-conversaciones">
+            <div class="conversacion">✦ &nbsp; conversación 1</div>
+            <div class="conversacion">✦ &nbsp; conversación 2</div>
+            <div class="conversacion">✦ &nbsp; conversación 3</div>
+        </div>
+
+    </aside>
+
+    
+    <section class="ia-contenido">
+
+        <div class="ia-encabezado">
+            <span class="estrella">✦</span>
+
+            <div>
+                <h1>ia-lectrify</h1>
+                <p>
+                    Chatea con nuestra inteligencia artificial para saber más sobre tu
+                    consumo eléctrico
+                </p>
+            </div>
+
+            <span class="estrella">✦</span>
+        </div>
+
+     
+        <div class="ia-chat">
+
+            <div class="ia-mensaje">
+                <span class="estrella">✦</span>
+                <div class="ia-cargando">
+                    •••
+                </div>
+            </div>
+
+        </div>
+
+       
+        <div class="ia-barra">
+
+            <div class="ia-boton">
+                <span>➤</span>
+            </div>
+
+            <input type="text" placeholder="Escribí tu mensaje..." disabled />
+
+        </div>
+
+    </section>
+
+</div>
+
+<style>
+
+   
+
+    .ia-pantalla {
+        display: flex;
+        width: 100%;
+        min-height: calc(100vh - 90px);
+        background: #020817;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+
+   
+
+    .ia-sidebar {
+        width: 220px;
+        min-width: 220px;
+        background: #1c326d;
+        padding: 15px 10px;
+    }
+
+    .ia-nuevo {
+        background: #07549b;
+        border-radius: 20px;
+        padding: 7px 12px;
+        font-size: 13px;
+        margin-bottom: 25px;
+        color: white;
+    }
+
+    .ia-nuevo span {
+        margin-left: 8px;
+    }
+
+    .ia-bienvenida {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin: 20px 5px 35px;
+        font-size: 14px;
+    }
+
+    .estrella-grande {
+        font-size: 42px;
+        color: white;
+    }
+
+    .ia-conversaciones {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .conversacion {
+        background: #07549b;
+        border-radius: 20px;
+        padding: 7px 10px;
+        font-size: 11px;
+        color: white;
+    }
+
+
+    .ia-contenido {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        padding: 45px 20px 15px;
+        background: radial-gradient(
+            ellipse at 40% 35%,
+            #073b4b 0%,
+            #052538 45%,
+            #020817 100%
+        );
+    }
+
+    
+
+    .ia-encabezado {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 45px;
+        text-align: center;
+    }
+
+    .ia-encabezado h1 {
+        font-size: 38px;
+        font-weight: normal;
+        color: white;
+        margin-bottom: 25px;
+    }
+
+    .ia-encabezado p {
+        color: #879eae;
+        font-size: 15px;
+        max-width: 450px;
+    }
+
+    .estrella {
+        color: white;
+        font-size: 55px;
+    }
+
+  
+
+    .ia-chat {
+        flex: 1;
+        display: flex;
+        align-items: flex-end;
+        padding: 20px 5px;
+    }
+
+    .ia-mensaje {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .ia-cargando {
+        background: #eeeeee;
+        color: #888888;
+        border-radius: 20px;
+        padding: 5px 40px;
+        font-size: 16px;
+        letter-spacing: 4px;
+    }
+
+    
+
+    .ia-barra {
+        width: 100%;
+        height: 55px;
+        background: #eeeeee;
+        border-radius: 35px;
+        display: flex;
+        align-items: center;
+        padding: 7px 10px;
+        gap: 10px;
+    }
+
+    .ia-boton {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        border-radius: 50%;
+        background: #1c326d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+
+    .ia-barra input {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: #333333;
+        font-size: 14px;
+    }
+
+    .ia-barra input::placeholder {
+        color: #aaaaaa;
+    }
+
+   
+
+    @@media (min-width: 768px) {
+
+        .ia-sidebar {
+            width: 125px;
+            min-width: 125px;
+        }
+
+        .ia-contenido {
+            padding: 30px 10px 15px;
+        }
+
+        .ia-encabezado {
+            gap: 10px;
+        }
+
+        .ia-encabezado h1 {
+            font-size: 25px;
+        }
+
+        .ia-encabezado p {
+            font-size: 11px;
+        }
+
+        .estrella {
+            font-size: 30px;
+        }
+
+    }
+
+</style>
